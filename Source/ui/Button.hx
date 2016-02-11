@@ -22,9 +22,9 @@ class Button extends UserInterface {
     // -- static init --
     if ( colour == null ) {
       colour = [0x5A607A, 0x506030, 0x500000];
-      addEventListener(MouseEvent.CLICK, update_button);
-      addEventListener(MouseEvent.MOUSE_OUT, update_button);
-      addEventListener(MouseEvent.MOUSE_OVER, update_button);
+      //addEventListener(MouseEvent.CLICK, update_button);
+      //addEventListener(MouseEvent.MOUSE_OUT, update_button);
+      //addEventListener(MouseEvent.MOUSE_OVER, update_button);
     }
     // -- constructor --
     set_state(ButtonState.Unhighlight);

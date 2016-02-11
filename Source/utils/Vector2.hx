@@ -9,4 +9,10 @@ class Vector2 extends Point {
   public function dot_product(vec:Vector2) : Float {
     return x*vec.x + y*vec.y;
   }
+  public function distance(vec:Vector2) : Float {
+    return Point.distance(this, vec);
+  }
+  public function to_string() : String {
+    return x + ", " + y;
+  }
 }

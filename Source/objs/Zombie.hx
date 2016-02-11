@@ -14,6 +14,7 @@ class Zombie {
   private var speed: Float;
   private var width: Int;
   private var height: Int;
+  private var target: Vector2;
 // public:
   public function new(x_:Int, y_:Int) {
     pos = new Vector2(x_, y_);
@@ -21,17 +22,32 @@ class Zombie {
     img = new Bitmap(Data.zombie);
     img.x = Std.int(x_);
     img.y = Std.int(y_);
-    Data.main.addChild(img);
+    Layers.Add_Child(img, Layers.Zombie);
     speed = Math.random() * Max_speed + Min_speed;
+    target = new Vector2(x_, y_);
   }
 
   public function update() : Void {
+    if ( target.distance( pos ) > 10 ) {
+      trace("Moving");
+      if ( target.x > pos.x ) pos.x += 0.6;
+      else                    pos.x -= 0.6;
+      if ( target.y > pos.y ) pos.y += 0.6;
+      else                    pos.y -= 0.6;
+    }
 
+    img.x = pos.x;
+    img.y = pos.y;
   }
+
   public function ret_position():Vector2 { return pos; }
   public function ret_dimension():Vector2 { return dim; }
   public function set_position(x:Int, y:Int):Void {
     pos.x = x;
     pos.y = y;
+  }
+  public function set_target_pos(v:Vector2):Void {
+      target.x = v.x;
+      target.y = v.y;
   }
 }

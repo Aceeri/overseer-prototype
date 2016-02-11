@@ -42,6 +42,7 @@ class Main extends Sprite {
 
   public function init() {
     Data.Load_Data(this);
+    Layers.initialize();
     Input.initialize();
 
     prev_time = lime.system.System.getTimer();
@@ -78,7 +79,7 @@ class Main extends Sprite {
     }
 
     Input.keys[event.keyCode] = true;
-    GameManager.zombies.push(new objs.Zombie(20, 20));
+    GameManager.zombies.push(new objs.Zombie(300, 200));
   }
 
   private function key_up(event: KeyboardEvent):Void {
@@ -90,6 +91,8 @@ class Main extends Sprite {
     var delta = (current_time - prev_time) / 1000.0;
     prev_time = current_time;
 
+    Input.mouse_x = Std.int(mouseX);
+    Input.mouse_y = Std.int(mouseY);
     console.update(delta);
     button.update(delta);
     GameManager.update();

@@ -11,6 +11,8 @@ class GameManager {
   }
 
   public static function update() {
-    //unit_select.update();
+    unit_select.update();
+    for ( z in zombies )
+      z.update();
   }
 }

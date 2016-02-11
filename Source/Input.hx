@@ -19,6 +19,10 @@ class Input {
     Input.keys = new Vector<Bool>(200);
     capture = new Sprite();
 
+    mouse = new Vector<Bool>(3);
+    mouse[0] = false;
+    mouse[1] = false;
+    mouse[2] = false;
     capture.graphics.beginFill(0, 0);
     capture.graphics.drawRect(0, 0, 800, 600);
     capture.graphics.endFill();
@@ -34,7 +38,6 @@ class Input {
   }
 
   private static function mouse_event(event: MouseEvent):Void {
-    trace(event.type);
     switch ( event.type ) {
       case "mouseDown":       Input.mouse[Input.Mouse_left  ] = true;
       case "mouseUp":         Input.mouse[Input.Mouse_left  ] = false;
