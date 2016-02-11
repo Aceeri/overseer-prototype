@@ -20,7 +20,7 @@ class Console extends UserInterface {
 
     name = "Console";
 
-    format = new TextFormat(Fonts.bitter.fontName, 16);
+    format = new TextFormat(Fonts.dejavu.fontName, 16);
 
     size.x = 500;
     size.y = 150;
@@ -32,8 +32,6 @@ class Console extends UserInterface {
     separation = 1.1;
 
     visible = false;
-
-    trace("bitter: " + Fonts.bitter.fontName);
 
     addEventListener(MouseEvent.MOUSE_WHEEL, wheel);
   }
@@ -48,7 +46,7 @@ class Console extends UserInterface {
     if (text[0] != null && text[0] == msg) {
       count[0]++;
       lines[0].htmlText = '<font color="#00FFFF">[' + count[0] +
-            ']</font><font color="' + color + '"> ' + text[0] + '</font>';
+            ']</font><font color="' + color + '">' + text[0] + '</font>';
     } else {
       var new_line = new TextField();
       new_line.antiAliasType = "advanced";
