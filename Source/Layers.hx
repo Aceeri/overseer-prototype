@@ -4,13 +4,14 @@ import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 
 class Layers {
-  public static inline var Zombie: Int = 2;
-  public static inline var Highlight: Int = 1;
   public static inline var Building: Int = 0;
+  public static inline var Highlight: Int = 1;
+  public static inline var Zombie: Int = 2;
+  public static inline var Zombie_spawner: Int = 3;
   private static var layers = new Array<Sprite>();
 
   public static function initialize() : Void {
-    for ( t in 0 ... 3 ) {
+    for ( t in 0 ... 25 ) {
       layers.push(new Sprite());
       Data.main.addChild(layers[t]);
     }

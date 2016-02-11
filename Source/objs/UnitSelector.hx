@@ -24,8 +24,8 @@ class UnitSelector {
       // update rectangle highlight
       var sx: Int = Std.int(sel_start.x);
       var sy: Int = Std.int(sel_start.y);
-      var mx: Int = Std.int(Input.mouse_x);
-      var my: Int = Std.int(Input.mouse_y);
+      var mx: Int = Std.int(Input.mouse_pos.x);
+      var my: Int = Std.int(Input.mouse_pos.y);
 
       if ( sx < mx ) {
         sx ^= mx;
@@ -51,8 +51,9 @@ class UnitSelector {
       if ( !Input.mouse[Input.Mouse_left] ) {
         // end highlight
         rectangle.graphics.clear();
-        if ( wx < 20 && wy < 20 ) { // issue a command
-          var t_pos = new Vector2(Input.mouse_x, Input.mouse_y);
+        if ( wx < 5 && wy < 5 ) { // issue a command
+          var t_pos = new Vector2(Std.int(Input.mouse_pos.x),
+                                  Std.int(Input.mouse_pos.y));
           trace("Instructing to move to " + t_pos.to_string());
           for ( z in units ) {
             z.set_target_pos(t_pos);
@@ -63,12 +64,12 @@ class UnitSelector {
       }
     }
     if ( !mouse_down && Input.mouse[Input.Mouse_left] ) {
-      sel_start = new Vector2(Input.mouse_x, Input.mouse_y);
+      sel_start = new Vector2(Std.int(Input.mouse_pos.x),
+                              Std.int(Input.mouse_pos.y));
     }
     mouse_down = Input.mouse[Input.Mouse_left];
 
     // move highlights on selected zombies
-    trace(units.length);
     for ( z in 0...units.length ) {
       var pos = units[z].ret_position();
       highlighted_units[z].x = pos.x + units[z].ret_dimension().x;
@@ -109,7 +110,7 @@ class UnitSelector {
       trace("To       " + position.x + ", " + position.y + ": " +
             dimensions.x + "x" + dimensions.y);
       trace("---");
-      if ( Util.AABBCollision(z.ret_position(), z.ret_dimension(),
+      if ( Util.AABBCol(z.ret_position(), z.ret_dimension(),
                               position, dimensions ) ) {
         Add_Unit(z);
         trace("Zombie Harvested!");

@@ -3,6 +3,14 @@ package objs;
 import openfl.display.Bitmap;
 import utils.Vector2;
 
+enum ZombieType {
+  Normal;
+  Banshee;
+  Hulk;
+  Ghost;
+  Stripper;
+}
+
 class Zombie {
 // CONSTS:
   public static inline var Max_speed: Float = 10.0;

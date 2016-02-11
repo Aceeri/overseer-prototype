@@ -47,10 +47,10 @@ class Main extends Sprite {
 
     prev_time = lime.system.System.getTimer();
 
-    var bitmap = new Bitmap(Assets.getBitmapData("assets/openfl.png"));
+    /*var bitmap = new Bitmap(Assets.getBitmapData("assets/openfl.png"));
     bitmap.x = (stage.stageWidth - bitmap.width) / 2;
     bitmap.y = (stage.stageHeight - bitmap.height) / 2;
-    addChild(bitmap);
+    addChild(bitmap);*/
 
     fps = new FPS();
     addChild(fps);
@@ -81,7 +81,6 @@ class Main extends Sprite {
     }
 
     Input.keys[event.keyCode] = true;
-    GameManager.zombies.push(new objs.Zombie(300, 200));
   }
 
   private function key_up(event: KeyboardEvent):Void {
@@ -93,10 +92,12 @@ class Main extends Sprite {
     var delta = (current_time - prev_time) / 1000.0;
     prev_time = current_time;
 
-    Input.mouse_x = Std.int(mouseX);
-    Input.mouse_y = Std.int(mouseY);
+    Input.mouse_pos.x = Std.int(mouseX);
+    Input.mouse_pos.y = Std.int(mouseY);
+    Input.mouse_x     = Std.int(Input.mouse_pos.x);
+    Input.mouse_y     = Std.int(Input.mouse_pos.y);
     console.update(delta);
     button.update(delta);
-    GameManager.update();
+    GameManager.update(delta);
   }
 }
