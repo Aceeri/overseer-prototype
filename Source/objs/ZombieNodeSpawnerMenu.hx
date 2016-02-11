@@ -19,9 +19,6 @@ class ZombieNodeSpawnerMenu {
     backdrop.x = x_;
     backdrop.y = y_;
     backdrop.visible = true;
-    trace(backdrop.visible);
-    trace('Position: $x_ $y_ ');
-    Layers.Add_Child(backdrop, Layers.Zombie_spawner);
     node = node_;
     prev_mouse = true; // we have to use this other than input's b/c
                        // input's update might  have this be false which
@@ -45,7 +42,6 @@ class ZombieNodeSpawnerMenu {
         trace("Queueing " + z_type.getName() + " zombie");
         node.Add_To_Queue(z_type);
       } else {
-        trace('Zombie spawner menu exited');
         GameManager.zombie_spawner_menu = null;
         backdrop.visible = false;
       }

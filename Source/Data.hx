@@ -19,10 +19,10 @@ class Data {
 
   public static function load_data(main_:Sprite) {
     main = main_;
-    zombie = Assets.getBitmapData("assets/zombie.png");
-    zombie_spawner = Assets.getBitmapData("assets/zombie_spawner.png");
+    zombie = Assets.getBitmapData("assets/zeds/zombie.png");
+    zombie_spawner = Assets.getBitmapData("assets/zeds/zombie_spawner.png");
     zombie_spawner_backdrop =
-              Assets.getBitmapData("assets/zombie_spawn_menu.png");
+    Assets.getBitmapData("assets/zombie_spawn_menu.png");
 
     load_tiles();
   }
