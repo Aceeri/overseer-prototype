@@ -21,7 +21,6 @@ class ZombieNodeSpawnerMenu {
     backdrop.visible = true;
     trace(backdrop.visible);
     trace('Position: $x_ $y_ ');
-    Layers.Add_Child(backdrop, Layers.Zombie_spawner);
     node = node_;
     prev_mouse = true; // we have to use this other than input's b/c
                        // input's update might  have this be false which
