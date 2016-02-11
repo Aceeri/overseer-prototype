@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="HelloWorld" package="ophion" version="0.0.1" company="" />
+	<app main="Main" path="Export" file="HelloWorld" />
+	<source path="Source" />
+	<haxelib name="openfl" />
+	<assets path="Assets" rename="assets" />
+	<window background="#DADADA" width="800" height="600" resizable="false"
+          vsync="false" fps="300" />
+</project>
