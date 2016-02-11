@@ -28,11 +28,28 @@ class Grid<T> {
         content = [for (i in 0...width * height) fillValue];
     }
 
-    public function fill(x1: Int, y1: Int, x2: Int, y2: Int, value: T) {
-    	for (x in x1...x2) {
-    		for (y in y1...y2) {
-    			set(x, y, value);
-    		}
-    	}
+    public function fill(x1: Int, y1: Int, x2: Int, y2: Int, value: T, ?exclude: Array<T>) {
+      for (x in x1...x2) {
+        for (y in y1...y2) {
+          if (exclude != null) {
+            var current = get(x, y);
+
+            for (i in 0...exclude.length) {
+              if (current == exclude[i]) {
+                continue;
+              }
+            }
+          }
+
+          set(x, y, value);
+        }
+      }
+    }
+
+    public function border(x1: Int, y1: Int, x2: Int, y2: Int, value: T, ?exclude: Array<T>) {
+      fill(x1, y1, x2, y1 + 1, value);
+      fill(x1, y1, x1 + 1, y2, value);
+      fill(x2 - 1, y1, x2, y2, value);
+      fill(x1, y2 - 1, x2, y2, value);
     }
 }

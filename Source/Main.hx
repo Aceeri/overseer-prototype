@@ -27,7 +27,7 @@ class Main extends Sprite {
     #if js
       haxe.Log.trace = function(v: Dynamic, ?i):Void {
         var msg = (i != null) ? i.fileName + ":" + i.lineNumber + ": " + v : v;
-        console.log(msg);
+        console.log(v);
         untyped __js__("console").log(msg);
       }
     #else
@@ -54,6 +54,8 @@ class Main extends Sprite {
 
     fps = new FPS();
     addChild(fps);
+
+    var city = new generation.City(2, 2);
 
     button = new Button();
     button.addEventListener(MouseEvent.CLICK, function(event: MouseEvent) {
