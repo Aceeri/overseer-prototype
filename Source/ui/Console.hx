@@ -5,6 +5,8 @@ import openfl.text.TextFormat;
 import openfl.events.MouseEvent;
 
 class Console extends UserInterface {
+  public static var count_lines: Bool = true;
+
   public var lines: Array<TextField> = [];
   private var text: Array<String> = [];
   private var count: Array<Int> = [];
@@ -23,7 +25,7 @@ class Console extends UserInterface {
     format = new TextFormat(Fonts.dejavu.fontName, 16);
 
     size.x = 500;
-    size.y = 150;
+    size.y = 600;
     background_color = 0x2D2D30;
     background_alpha = 0.9;
     scroll = 0.0;
@@ -43,7 +45,7 @@ class Console extends UserInterface {
       color = "#569ED8";
     }
 
-    if (text[0] != null && text[0] == msg) {
+    if (count_lines && text[0] != null && text[0] == msg) {
       count[0]++;
       lines[0].htmlText = '<font color="#00FFFF">[' + count[0] +
             ']</font><font color="' + color + '">' + text[0] + '</font>';
@@ -87,7 +89,6 @@ class Console extends UserInterface {
     }
 
     scroll += speed * event.delta;
-    trace(event.delta);
 
     var total_y = 0.0;
     for (line in lines) {
