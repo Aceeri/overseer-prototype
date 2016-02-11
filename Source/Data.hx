@@ -14,6 +14,7 @@ class Data {
   public static var main : Sprite;
   public static var zombie_spawner : BitmapData;
   public static var zombie_spawner_backdrop : BitmapData;
+  public static var zombie_spawner_queue : BitmapData;
 
   public static var tile_map: StringMap<BitmapData>;
 
@@ -22,8 +23,9 @@ class Data {
     zombie = Assets.getBitmapData("assets/zeds/zombie.png");
     zombie_spawner = Assets.getBitmapData("assets/zeds/zombie_spawner.png");
     zombie_spawner_backdrop =
-    Assets.getBitmapData("assets/zombie_spawn_menu.png");
-
+          Assets.getBitmapData("assets/zeds/zombie_spawn_menu.png");
+    zombie_spawner_queue =
+           Assets.getBitmapData("assets/zeds/zombie_spawn_menu_queue.png");
     load_tiles();
   }
 
