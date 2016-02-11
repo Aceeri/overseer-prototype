@@ -31,7 +31,7 @@ class Console extends UserInterface {
     scroll = 0.0;
     speed = 7.0;
     bounds = 8.0;
-    separation = 1.1;
+    //separation = 1.5;
 
     visible = false;
 
@@ -55,6 +55,8 @@ class Console extends UserInterface {
       new_line.width = size.x;
       new_line.text = msg;
       new_line.defaultTextFormat = format;
+      new_line.multiline = true;
+      new_line.wordWrap = true;
       //new_line.embedFonts = true;
       new_line.htmlText = '<font color="' + color + '>' + msg + '</font>';
       addChild(new_line);
@@ -77,9 +79,9 @@ class Console extends UserInterface {
 
     var total_y = 0.0;
     for (index in 0...lines.length) {
-      total_y += lines[index].numLines;
-      lines[index].y = (-format.size * (total_y - 1) * separation) + size.y -
-                         format.size - bounds + scroll;
+      total_y += lines[index].textHeight;
+      lines[index].y = size.y + scroll - total_y - bounds;
+      lines[index].height = lines[index].textHeight + format.size;
     }
   }
 
@@ -92,18 +94,17 @@ class Console extends UserInterface {
 
     scroll += speed * event.delta;
 
-    var total_lines = 0;
+    //var total_lines = 0;
     var total_y = 0.0;
     for (line in lines) {
-      total_y += line.getTextFormat().size * line.numLines;
-      total_lines += line.numLines;
+      total_y += line.textHeight;
+      //total_lines += line.numLines;
     }
 
-    if (scroll < 0.0 || total_lines * format.size <= size.y) {
+    if (scroll < 0.0 || total_y <= size.y) {
       scroll = 0.0;
-    } else if (scroll > total_lines * format.size * separation + bounds -
-               size.y) {
-      scroll = total_lines * format.size * separation + bounds - size.y;
+    } else if (scroll > total_y + bounds - size.y) {
+      scroll = total_y + bounds - size.y;
     }
   }
 }
