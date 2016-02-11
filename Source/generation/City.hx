@@ -135,9 +135,9 @@ class City {
     grid.border(0, 0, grid.width, grid.height, GridType.SIDEWALK);
   }
 
-  public function draw(): Array<Sprite> {
+  /*public function draw(): Array<Sprite> {
 
-  }
+  }*/
 
   private function find_side(x: Int, y: Int): Array<Point> {
     var possibility: Array<Point> = [];
