@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="HelloWorld" package="ophion" version="0.0.1" company="" />
+	<meta title="Revenant Overseer" package="ophion" version="0.0.1" company="" />
 	<app main="Main" path="Export" file="HelloWorld" />
 	<source path="Source" />
 	<haxelib name="openfl" />
