@@ -18,9 +18,9 @@ class BuildingList {
 		for (index in 0...files.length) {
 			var path = files[index];
 			var regex = ~/assets\/layouts\/(\d+x\d+)\/.+/;
-			regex.match(path);
+			var matched = regex.match(path);
 
-			if (regex.matched(1) != null) {
+			if (matched && regex.matched(1) != null) {
 				if (size_map.get(regex.matched(1)) == null) {
 					size_map.set(regex.matched(1), [ path ]);
 				} else {

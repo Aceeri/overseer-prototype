@@ -4,6 +4,7 @@ package generation;
 //import js.html.FileReader;
 
 import openfl.Assets;
+import openfl.display.Bitmap;
 import openfl.geom.Point;
 import generation.City.GridType;
 import utils.Grid;
@@ -77,6 +78,19 @@ class BuildingParser {
 		}
 
 		return char;
+	}
+
+	public function as_bitmap(type: GridType): Bitmap {
+		var data = Data.tile_map.get(Std.string(type));
+		var bitmap;
+
+		if (data == null) {
+			bitmap = new Bitmap();
+		} else {
+			bitmap = new Bitmap(data);
+		}
+
+		return bitmap;
 	}
 
 	public function print(grid: Grid<GridType>) {

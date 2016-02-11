@@ -3,6 +3,8 @@ package generation;
 import utils.Grid;
 import openfl.geom.Point;
 import openfl.Assets;
+import openfl.display.DisplayObjectContainer;
+import openfl.display.DisplayObject;
 
 enum GridType {
   UNKNOWN;
@@ -22,8 +24,8 @@ class City {
   private var list: BuildingList = new BuildingList();
 
   // per 10
-  private var double_blocks: Int = 2;
-  private var quad_blocks: Int = 1;
+  private var double_blocks: Int = 10;
+  private var quad_blocks: Int = 3;
   
   private var block_size: Int = 10;
   private var road_size: Int = 5;
@@ -45,8 +47,9 @@ class City {
       }
     }
 
+    trace(parser.as_bitmap(GridType.ROAD));
     generate();
-    parser.print(grid);
+    //parser.print(grid);
   }
 
   private function generate() {
@@ -135,9 +138,20 @@ class City {
     grid.border(0, 0, grid.width, grid.height, GridType.SIDEWALK);
   }
 
-  /*public function draw(): Array<Sprite> {
-
-  }*/
+  public function draw(canvas: DisplayObjectContainer) {
+    var width = 32;
+    for (x in 0...grid.width) {
+      for (y in 0...grid.height) {
+        //trace("Drawing (" + x + ", " + y + "): " + grid.get(x, y));
+        var bitmap = parser.as_bitmap(grid.get(x, y));
+        bitmap.width = width;
+        bitmap.height = width;
+        bitmap.x = x * width;
+        bitmap.y = y * width;
+        canvas.addChild(bitmap);
+      }
+    }
+  }
 
   private function find_side(x: Int, y: Int): Array<Point> {
     var possibility: Array<Point> = [];
