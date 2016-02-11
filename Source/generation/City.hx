@@ -5,11 +5,13 @@ import openfl.geom.Point;
 import openfl.Assets;
 
 enum GridType {
+  UNKNOWN;
   CROSSWALK;
   SIDEWALK;
   ROAD;
   WALL;
   FLOOR;
+  DOOR;
 }
 
 class City {
@@ -17,9 +19,10 @@ class City {
   private var size_grid: Grid<Array<Point>>;
 
   private var parser: BuildingParser = new BuildingParser();
+  private var list: BuildingList = new BuildingList();
 
   // per 10
-  private var double_blocks: Int = 1;
+  private var double_blocks: Int = 2;
   private var quad_blocks: Int = 1;
   
   private var block_size: Int = 10;
@@ -32,7 +35,8 @@ class City {
     this.width = width;
     this.height = height;
 
-    grid = new Grid(width * block_size + (width + 1) * road_size, height * block_size + (height + 1) * road_size, GridType.ROAD);
+    grid = new Grid(width * block_size + (width + 1) * road_size, height 
+      * block_size + (height + 1) * road_size, GridType.ROAD);
     size_grid = new Grid(width, height, null);
 
     for (x in 0...width) {
@@ -42,11 +46,7 @@ class City {
     }
 
     generate();
-    print();
-
-    var layout = parser.parse("assets/layouts/1x1/basic.txt", 10, 10);
-
-    trace(layout);
+    parser.print(grid);
   }
 
   private function generate() {
@@ -59,44 +59,22 @@ class City {
         var y = block_y * block_size + block_y * road_size + road_size;
 
         grid.border(x - road_size, y - road_size, x, y, GridType.CROSSWALK);
-        grid.border(x - road_size, y + block_size, x, y + block_size + road_size, GridType.CROSSWALK);
-        grid.border(x + block_size, y - road_size, x + block_size + road_size, y, GridType.CROSSWALK);
-        grid.border(x + block_size, y + block_size, x + block_size + road_size, y + block_size + road_size, GridType.CROSSWALK);
+        grid.border(x - road_size, y + block_size, x, y + block_size + road_size,
+          GridType.CROSSWALK);
+        grid.border(x + block_size, y - road_size, x + block_size + road_size, y,
+          GridType.CROSSWALK);
+        grid.border(x + block_size, y + block_size, x + block_size + road_size, 
+          y + block_size + road_size, GridType.CROSSWALK);
       }
     }
 
     var max_double = double_blocks;
+    var max_quad = quad_blocks;
 
     // combine buildings
-    for (i in 0...max_double) {
-      var x = Std.random(width);
-      var y = Std.random(height);
-      var cell = size_grid.get(x, y);
-
-      if (cell.length > 1) {
-        continue;
-      }
-
-      /*var possibility = find_side(x, y);
-      if (possibility.length == 0) {
-        continue;
-      }
-
-      var combination = possibility[Std.random(possibility.length)];
-      for (j in 0...cell.length) {
-        size_grid.get(Std.int(combination.x), Std.int(combination.y)).push(cell[j]);
-      }
-      cell.push(combination);*/
-      var possibility = find_possibilities(x, y, [new Point(0, 0), new Point(1, 0)]);
-      trace("Cell: " + new Point(x, y));
-      trace("Possibilities: ");
-      for (i in 0...possibility.length) {
-        trace(i + ": " + possibility[i]);
-      }
-
-      // TODO:
-      // Use possibilities and fill in layout
-    }
+    combine(double_blocks, [new Point(0, 0), new Point(1, 0)]);
+    combine(quad_blocks, 
+      [new Point(0, 0), new Point(1, 0), new Point(0, 1), new Point(1, 1)]);
 
     // draw buildings/sidewalks
     for (block_x in 0...width) {
@@ -125,9 +103,11 @@ class City {
           }
 
           start_x = min_x * block_size + min_x * road_size + road_size;
-          end_x = max_x * block_size + max_x * road_size + road_size + block_size;
+          end_x = max_x * block_size + max_x * road_size + road_size 
+                  + block_size;
           start_y = min_y * block_size + min_y * road_size + road_size;
-          end_y = max_y * block_size + max_y * road_size + road_size + block_size;
+          end_y = max_y * block_size + max_y * road_size + road_size
+                  + block_size;
         } else {
           start_x = block_x * block_size + block_x * road_size + road_size;
           start_y = block_y * block_size + block_y * road_size + road_size;
@@ -135,36 +115,28 @@ class City {
           end_y = start_y + block_size;
         }
 
-        grid.fill(start_x, start_y, end_x, end_y, GridType.FLOOR);
-        grid.border(start_x, start_y, end_x, end_y, GridType.WALL);
-        grid.border(start_x - 1, start_y - 1, end_x + 1, end_y + 1, GridType.SIDEWALK);
+        var width = end_x - start_x;
+        var height = end_y - start_y;
+        var layout = list.get_layout(width + "x" + height);
+
+        if (layout != "") {
+          var plug = parser.parse(layout, width, height);
+          grid.plug(start_x, start_y, end_x, end_y, plug);
+        } else {
+          grid.fill(start_x, start_y, end_x, end_y, GridType.FLOOR);
+          grid.border(start_x, start_y, end_x, end_y, GridType.WALL);
+        }
+
+        grid.border(start_x - 1, start_y - 1, end_x + 1, end_y + 1,
+          GridType.SIDEWALK);
       }
     }
 
     grid.border(0, 0, grid.width, grid.height, GridType.SIDEWALK);
   }
 
-  private function print() {
-    ui.Console.count_lines = false;
-    for (y in 0...grid.height) {
-      var current_line = "";
-      for (x in 0...grid.width) {
-        switch (grid.get(x, y)) {
-          case CROSSWALK:
-            current_line += ":";
-          case SIDEWALK:
-            current_line += "+";
-          case ROAD:
-            current_line += "~";
-          case WALL:
-            current_line += "|";
-          case FLOOR:
-            current_line += "-";
-        }
-      }
-      trace(current_line);
-    }
-    ui.Console.count_lines = true;
+  public function draw(): Array<Sprite> {
+
   }
 
   private function find_side(x: Int, y: Int): Array<Point> {
@@ -199,7 +171,8 @@ class City {
   // [(0, 0), (1, 0), (0, 1), (1, 1)] 2x2
   // [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1)] 3x2
   // [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2)] 3x3
-  private function find_possibilities(x: Int, y: Int, layout: Array<Point>): Array<Array<Point>> {
+  private function find_possibilities(x: Int, y: Int, layout: Array<Point>):
+    Array<Array<Point>> {
     var coordinate = new Point(x, y);
     var possibility = [];
 
@@ -233,12 +206,40 @@ class City {
       if (possible) {
         var correction = [];
         for (correction_index in 0...offset_layout.length) {
-          correction[correction_index] = offset_layout[correction_index].add(coordinate);
+          correction[correction_index] = offset_layout[correction_index]
+                                                              .add(coordinate);
         }
         possibility.push(correction);
       }
     }
 
     return possibility;
+  }
+
+  private function combine(max: Int, layout: Array<Point>) {
+    for (i in 0...max) {
+      var x = Std.random(size_grid.width);
+      var y = Std.random(size_grid.height);
+      var cell = size_grid.get(x, y);
+
+      if (cell.length > 1) {
+        continue;
+      }
+
+      var possibility = find_possibilities(x, y, layout);
+
+      for (i in 0...possibility.length) {
+        //trace(i + ": " + possibility[i]);
+      }
+
+      if (possibility.length == 0) {
+        continue;
+      }
+
+      var use = possibility[Std.random(possibility.length)];
+      for (j in 0...use.length) {
+        size_grid.set(Std.int(use[j].x), Std.int(use[j].y), use);
+      }
+    }
   }
 }
