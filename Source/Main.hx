@@ -41,7 +41,7 @@ class Main extends Sprite {
   }
 
   public function init() {
-    Data.Load_Data(this);
+    Data.load_data(this);
     Layers.initialize();
     Input.initialize();
 
