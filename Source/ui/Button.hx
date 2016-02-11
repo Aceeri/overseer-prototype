@@ -1,6 +1,5 @@
 package ui;
 
-import ash.core.Entity;
 import openfl.events.MouseEvent;
 import openfl.display.Shape;
 import ui.UserInterface;
@@ -16,7 +15,6 @@ class Button extends UserInterface {
   // private:
   private var state: ButtonState;
   private static var colour: Vector<Int>;
-  private static var shapes: Vector<Shape>;
   private function activate_button() : Void {}
 
   // public:
@@ -36,10 +34,7 @@ class Button extends UserInterface {
   public function set_state(s:ButtonState) : Void {
     state = s;
 
-    graphics.clear();
-    graphics.beginFill( colour[s.getIndex()] );
-    graphics.drawRect(0, 0, width, height);
-    graphics.endFill();
+    background_color = colour[ s.getIndex() ];
   }
 
   public function ret_state() : ButtonState { return state; }
