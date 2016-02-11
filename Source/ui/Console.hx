@@ -75,8 +75,10 @@ class Console extends UserInterface {
   public override function update(delta: Float) {
     super.update(delta);
 
+    var total_y = 0.0;
     for (index in 0...lines.length) {
-      lines[index].y = (-format.size * separation * index) + size.y -
+      total_y += lines[index].numLines;
+      lines[index].y = (-format.size * (total_y - 1) * separation) + size.y -
                          format.size - bounds + scroll;
     }
   }
@@ -90,16 +92,18 @@ class Console extends UserInterface {
 
     scroll += speed * event.delta;
 
+    var total_lines = 0;
     var total_y = 0.0;
     for (line in lines) {
-      total_y += line.getTextFormat().size;
+      total_y += line.getTextFormat().size * line.numLines;
+      total_lines += line.numLines;
     }
 
-    if (scroll < 0.0 || total_y <= size.y) {
+    if (scroll < 0.0 || total_lines * format.size <= size.y) {
       scroll = 0.0;
-    } else if (scroll > lines.length * format.size * separation + bounds -
+    } else if (scroll > total_lines * format.size * separation + bounds -
                size.y) {
-      scroll = lines.length * format.size * separation + bounds - size.y;
+      scroll = total_lines * format.size * separation + bounds - size.y;
     }
   }
 }
