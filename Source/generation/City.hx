@@ -2,6 +2,7 @@ package generation;
 
 import utils.Grid;
 import openfl.geom.Point;
+import openfl.Assets;
 
 enum GridType {
   CROSSWALK;
@@ -41,8 +42,11 @@ class City {
     }
 
     generate();
-
     print();
+
+    var layout = parser.parse("assets/layouts/1x1/basic.txt", 10, 10);
+
+    trace(layout);
   }
 
   private function generate() {
@@ -83,12 +87,15 @@ class City {
         size_grid.get(Std.int(combination.x), Std.int(combination.y)).push(cell[j]);
       }
       cell.push(combination);*/
-      var possibility = find_possibilities(x, y, [new Point(0, 0), new Point(1, 0), new Point(0, 1)]);
+      var possibility = find_possibilities(x, y, [new Point(0, 0), new Point(1, 0)]);
       trace("Cell: " + new Point(x, y));
       trace("Possibilities: ");
       for (i in 0...possibility.length) {
         trace(i + ": " + possibility[i]);
       }
+
+      // TODO:
+      // Use possibilities and fill in layout
     }
 
     // draw buildings/sidewalks

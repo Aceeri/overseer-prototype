@@ -1,23 +1,31 @@
 package generation;
 
-import js.html.File;
-import js.html.FileReader;
+//import js.html.File;
+//import js.html.FileReader;
+
+import openfl.Assets;
+import openfl.geom.Point;
+import generation.City.GridType;
+import utils.Grid;
 
 class BuildingParser {
-
-	private var reader = new FileReader();
 	
 	public function new() {
 
 	}
 
-	public function parse(file: String): Array<GridType> {
-		#if js
-			var blob = new File(file);
-			var label = "";
-			reader.readAsText(blob, label);
-			trace(blob + ", " + label);
-		#end
+	public function parse(path: String, width: Int, height: Int): Grid<GridType> {
+		var content = Assets.getText(path);
+		var grid = new Grid(width, height);
+
+		for (content_index in 0...content.length) {
+			var x = Math.floor(content_index / width);
+			var y = content_index % height;
+			//trace("Content: " + new Point(x, y));
+			//grid.set()
+		}
+
+		return grid;
 	}
 
 	public function as_grid(char: String): GridType {
@@ -32,11 +40,12 @@ class BuildingParser {
 				return GridType.SIDEWALK;
 			case "-":
 				return GridType.FLOOR;
-
+			default:
+				return GridType.ROAD;
 		}
 	}
 
 	public function as_char(type: GridType): String {
-
+		return "";
 	}
 }
