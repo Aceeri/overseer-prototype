@@ -41,6 +41,7 @@ class Main extends Sprite {
   }
 
   public function init() {
+    Data.Load_Data(this);
     Input.initialize();
 
     prev_time = lime.system.System.getTimer();
@@ -61,11 +62,12 @@ class Main extends Sprite {
 
     stage.addEventListener(KeyboardEvent.KEY_DOWN, key_down);
     stage.addEventListener(KeyboardEvent.KEY_UP, key_up);
-    stage.addEventListener(Event.ENTER_FRAME, update);
+    addEventListener(Event.ENTER_FRAME, update);
 
     Interface.add_interface(console);
 
     Interface.add_to(this);
+    GameManager.start();
   }
 
   private function key_down(event: KeyboardEvent):Void {
@@ -76,6 +78,7 @@ class Main extends Sprite {
     }
 
     Input.keys[event.keyCode] = true;
+    GameManager.zombies.push(new objs.Zombie(20, 20));
   }
 
   private function key_up(event: KeyboardEvent):Void {
@@ -87,9 +90,8 @@ class Main extends Sprite {
     var delta = (current_time - prev_time) / 1000.0;
     prev_time = current_time;
 
-    var speed = 50;
-
     console.update(delta);
     button.update(delta);
+    GameManager.update();
   }
 }
