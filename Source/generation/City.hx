@@ -2,9 +2,12 @@ package generation;
 
 import utils.Grid;
 import openfl.geom.Point;
+import openfl.geom.Rectangle;
 import openfl.Assets;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.DisplayObject;
+import openfl.display.BitmapData;
+import openfl.display.Bitmap;
 
 class City {
   private var floor_grid: Grid<GridType>;
@@ -135,60 +138,33 @@ class City {
     var width = 16;
     var count = 0;
 
-    var directions = [
-      new Point(1, 0), new Point(0, 1), 
-      new Point(-1, 0), new Point(0, -1),
-    ];
-
-    var optimize_grid = new Grid<Array<Point>>(floor_grid.width, floor_grid.height, []);
-    for (x in 0...optimize_grid.width) {
-      for (y in 0...optimize_grid.height) {
-        optimize_grid.set(x, y, [new Point(x, y)]);
-      }
-    }
-
-    for (x in 0...optimize_grid.width) {
-      for (y in 0...optimize_grid.height) {
-        var arr = optimize_grid.get(x, y);
-        var coordinate = new Point(x, y);
-        var type = floor_grid.get(x, y);
-
-        if (arr.length == 1) {
-          for (i in 0...directions.length) {
-            var mm = minmax(arr);
-
-          }
-        }
-      }
-    }
+    var floor_bitmap = new BitmapData(width * floor_grid.width, width * floor_grid.height, true, 0x00FFFFFF);
+    var object_bitmap = new BitmapData(width * object_grid.width, width * object_grid.height, true, 0x00FFFFFF);
 
     for (x in 0...floor_grid.width) {
       for (y in 0...floor_grid.height) {
         var bitmap = parser.as_bitmap(floor_grid.get(x, y));
-        bitmap.width = width;
-        bitmap.height = width;
-        bitmap.x = x * width;
-        bitmap.y = y * width;
-        canvas.addChild(bitmap);
+        floor_bitmap.copyPixels(bitmap.bitmapData,
+          new Rectangle(0, 0, width, width), new Point(x * width, y * width));
         count++;
       }
     }
+    canvas.addChild(new Bitmap(floor_bitmap));
 
     for (x in 0...object_grid.width) {
       for (y in 0...object_grid.height) {
         if (object_grid.get(x, y) != GridType.NONE) {
           var bitmap = parser.as_bitmap(object_grid.get(x, y));
-          bitmap.width = width;
-          bitmap.height = width;
-          bitmap.x = x * width;
-          bitmap.y = y * width;
-          canvas.addChild(bitmap);
+          object_bitmap.copyPixels(bitmap.bitmapData,
+            new Rectangle(0, 0, 16, 16), new Point(x * width, y * width));
           count++;
         }
       }
     }
+    canvas.addChild(new Bitmap(object_bitmap));
     
     trace("Bitmap Count: " + count);
+    trace("Total Canvas Children: " + canvas.numChildren);
   }
 
   // [(0, 0), (1, 0)] 2x1
