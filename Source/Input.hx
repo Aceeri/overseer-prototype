@@ -8,6 +8,7 @@ import openfl.geom.Point;
 import utils.Vector2;
 
 class Input {
+  private static var stage: DisplayObject;
   public static var keys: Vector<Bool>;
   public static var mouse: Vector<Bool>;
   public static var mouse_prev: Vector<Bool>;
@@ -18,12 +19,14 @@ class Input {
   public static var mouse_x : Int;
   public static var mouse_y : Int;
 
-  public static function initialize(stage: DisplayObject) {
+  public static function initialize(stage_: DisplayObject) {
+    stage = stage_;
+
     Input.keys = new Vector<Bool>(200);
     mouse_pos  = new Vector2(0, 0);
     mouse      = [false, false, false];
     mouse_prev = [false, false, false];
-    
+
     stage.addEventListener(MouseEvent.MOUSE_DOWN,        mouse_event);
     stage.addEventListener(MouseEvent.MOUSE_UP,          mouse_event);
     stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, mouse_event);

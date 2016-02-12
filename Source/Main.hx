@@ -49,7 +49,7 @@ class Main extends Sprite {
 
     Data.load_data(camera);
     Layers.initialize();
-    Input.initialize(this);
+    Input.initialize(camera);
 
     prev_time = lime.system.System.getTimer();
 
@@ -67,7 +67,7 @@ class Main extends Sprite {
     addEventListener(Event.ENTER_FRAME, update);
 
     Interface.add_interface(console);
-    Interface.add_to(camera);
+    Interface.add_to(this);
     GameManager.start();
   }
 
@@ -90,14 +90,14 @@ class Main extends Sprite {
     var delta = (current_time - prev_time) / 1000.0;
     prev_time = current_time;
 
+    Input.mouse_pos.x = Std.int(mouseX - camera.x);
+    Input.mouse_pos.y = Std.int(mouseY - camera.y);
+    Input.mouse_x     = Std.int(Input.mouse_pos.x);
+    Input.mouse_y     = Std.int(Input.mouse_pos.y);
+
     camera.update(delta);
     console.update(delta);
     button.update(delta);
     GameManager.update(delta);
-
-    Input.mouse_pos.x = Std.int(mouseX);
-    Input.mouse_pos.y = Std.int(mouseY);
-    Input.mouse_x     = Std.int(Input.mouse_pos.x);
-    Input.mouse_y     = Std.int(Input.mouse_pos.y);
   }
 }
