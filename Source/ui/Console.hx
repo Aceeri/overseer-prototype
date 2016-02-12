@@ -3,26 +3,32 @@ package ui;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.events.MouseEvent;
+import openfl.display.FPS;
 
 class Console extends UserInterface {
   public static var count_lines: Bool = true;
+  private var fps: FPS;
+  private var memory: Memory;
+  private var topbar: UserInterface;
 
-  public var lines: Array<TextField> = [];
+  private var lines: Array<TextField> = [];
   private var text: Array<String> = [];
   private var count: Array<Int> = [];
-  public var max_lines = 500;
-  public var format: TextFormat;
-  public var scroll: Float;
+
+  private var max_lines = 500;
+  private var format: TextFormat;
+  private var scroll: Float;
   private var speed: Float;
   private var bounds: Float;
   private var separation: Float;
+  private var sidebar: Float;
 
   public function new() {
     super();
 
     name = "Console";
 
-    format = new TextFormat(Fonts.dejavu.fontName, 16);
+    format = new TextFormat(Fonts.dejavu.fontName, 14);
 
     size.x = 500;
     size.y = 600;
@@ -32,6 +38,30 @@ class Console extends UserInterface {
     speed = 7.0;
     bounds = 8.0;
     //separation = 1.5;
+    sidebar = 5.0;
+
+    fps = new FPS();
+    fps.width = size.x;
+    fps.x = sidebar;
+    fps.y = 5;
+    fps.defaultTextFormat = format;
+    fps.textColor = 0xEEEEEE;
+
+    memory = new Memory();
+    memory.width = size.x;
+    memory.x = sidebar;
+    memory.y = 20;
+    memory.defaultTextFormat = format;
+    memory.textColor = 0xEEEEEE;
+
+    topbar = new UserInterface();
+    topbar.size.x = size.x;
+    topbar.size.y = 40;
+    topbar.background_color = 0x2D2D30;
+    topbar.addChild(fps);
+    topbar.addChild(memory);
+    topbar.background_alpha = 0.8;
+    children.push(topbar);
 
     visible = false;
 
@@ -52,7 +82,7 @@ class Console extends UserInterface {
     } else {
       var new_line = new TextField();
       new_line.antiAliasType = "advanced";
-      new_line.width = size.x;
+      new_line.width = size.x - sidebar;
       new_line.text = msg;
       new_line.defaultTextFormat = format;
       new_line.multiline = true;
@@ -81,6 +111,7 @@ class Console extends UserInterface {
     for (index in 0...lines.length) {
       total_y += lines[index].textHeight;
       lines[index].y = size.y + scroll - total_y - bounds;
+      lines[index].x = sidebar;
       lines[index].height = lines[index].textHeight + format.size;
     }
   }
@@ -101,10 +132,10 @@ class Console extends UserInterface {
       //total_lines += line.numLines;
     }
 
-    if (scroll < 0.0 || total_y <= size.y) {
+    if (scroll < 0.0 || total_y <= size.y - topbar.size.y) {
       scroll = 0.0;
-    } else if (scroll > total_y + bounds - size.y) {
-      scroll = total_y + bounds - size.y;
+    } else if (scroll > total_y + bounds - size.y + topbar.size.y) {
+      scroll = total_y + bounds - size.y + topbar.size.y;
     }
   }
 }

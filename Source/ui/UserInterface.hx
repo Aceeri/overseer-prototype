@@ -9,7 +9,7 @@ import openfl.events.MouseEvent;
 import openfl.Vector;
 
 class UserInterface extends Sprite {
-  public var children: Vector<UserInterface> = [];
+  public var children: Array<UserInterface> = [];
 
   private var shape: Shape;
   private var prev_size: Point;
@@ -45,6 +45,13 @@ class UserInterface extends Sprite {
       shape.graphics.endFill();
     }
 
+    for (child in 0...children.length) {
+      children[child].update(delta);
+
+      if (visible != children[child].visible) {
+        children[child].visible = visible;
+      }
+    }
   }
 
   public function add(ui: UserInterface) {
