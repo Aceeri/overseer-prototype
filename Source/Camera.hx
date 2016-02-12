@@ -5,9 +5,9 @@ import openfl.ui.Keyboard;
 
 class Camera extends DisplayObjectContainer {
 
-  var speed = 150;
-  var screen_x = 800;
-  var screen_y = 600;
+  public var speed = 150;
+  public var screen_x = 800;
+  public var screen_y = 600;
 
   public function update(delta: Float) {
 

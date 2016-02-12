@@ -27,12 +27,16 @@ class Input {
     mouse      = [false, false, false];
     mouse_prev = [false, false, false];
 
-    stage.addEventListener(MouseEvent.MOUSE_DOWN,        mouse_event);
-    stage.addEventListener(MouseEvent.MOUSE_UP,          mouse_event);
-    stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, mouse_event);
-    stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,   mouse_event);
-    stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,  mouse_event);
-    stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP,    mouse_event);
+    listeners(stage);
+  }
+
+  public static function listeners(canvas: DisplayObject) {
+    canvas.addEventListener(MouseEvent.MOUSE_DOWN,        mouse_event);
+    canvas.addEventListener(MouseEvent.MOUSE_UP,          mouse_event);
+    canvas.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, mouse_event);
+    canvas.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,   mouse_event);
+    canvas.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,  mouse_event);
+    canvas.addEventListener(MouseEvent.RIGHT_MOUSE_UP,    mouse_event);
   }
 
   // Updates mouse_prev

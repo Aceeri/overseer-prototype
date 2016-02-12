@@ -22,7 +22,7 @@ class City {
   private var quad_blocks: Int = 3;
 
   private var block_size: Int = 10;
-  private var road_size: Int = 5;
+  private var road_size: Int = 6;
 
   public var width: Int;
   public var height: Int;
