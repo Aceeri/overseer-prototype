@@ -6,7 +6,6 @@ package generation;
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.geom.Point;
-import generation.City.GridType;
 import utils.Grid;
 
 import haxe.ds.StringMap;
@@ -14,13 +13,26 @@ import haxe.ds.EnumValueMap;
 
 class BuildingParser {
 	private var associations = [
-		{ char: "|", type: GridType.WALL },
+		// special
+		{ char: ".", type: GridType.NONE },
+		{ char: "?", type: GridType.UNKNOWN },
+
+		// floor
 		{ char: "~", type: GridType.ROAD },
 		{ char: ":", type: GridType.CROSSWALK },
 		{ char: "+", type: GridType.SIDEWALK },
 		{ char: "-", type: GridType.FLOOR },
+		{ char: ";", type: GridType.GRASS },
+		
+		// objects
+		{ char: "|", type: GridType.WALL },
 		{ char: "/", type: GridType.DOOR },
-		{ char: "?", type: GridType.UNKNOWN }
+
+		// resources
+		{ char: "w", type: GridType.WEAPON },
+		{ char: "a", type: GridType.AMMO },
+		{ char: "m", type: GridType.MEDICAL },
+		{ char: "f", type: GridType.FOOD },
 	];
 
 	private var char_map: StringMap<GridType>;
@@ -36,9 +48,13 @@ class BuildingParser {
 		}
 	}
 
-	public function parse(path: String, width: Int, height: Int): Grid<GridType> {
+	public function parse(path: String, width: Int, height: Int): 
+															{floor: Grid<GridType>, object: Grid<GridType>} {
 		var content = Assets.getText(path);
-		var grid = new Grid(width, height);
+		var upper = false;
+
+		var floor_grid = new Grid(width, height);
+		var object_grid = new Grid(width, height);
 
 		var count = 0;
 		for (index in 0...content.length) {
@@ -46,18 +62,38 @@ class BuildingParser {
 			var y = Std.int(count / width);
 
 			var char = content.charAt(index);
+
+			if (char == "^") {
+				count = 0;
+				upper = true;
+			}
 			
-			if (char == "\r" || char == "\n" || !grid.in_range(x, y)) {
+			if (char == "\r" || char == "\n") {
 				continue;
 			} else {
-				grid.set(x, y, as_grid(char));
+				if (!upper) {
+					if (!floor_grid.in_range(x, y)) {
+						continue;
+					} else {
+						floor_grid.set(x, y, as_grid(char));
+					}
+				} else {
+					if (!object_grid.in_range(x, y)) {
+						continue;
+					} else {
+						object_grid.set(x, y, as_grid(char));
+					}
+				}
+
+				
 				count++;
 			}
 		}
 
-		//print(grid);
-
-		return grid;
+		return {
+			floor: floor_grid,
+			object: object_grid
+		}
 	}
 
 	public function as_grid(char: String): GridType {

@@ -6,7 +6,7 @@ import openfl.display.Sprite;
 import openfl.Assets;
 import openfl.Assets.AssetType;
 
-import generation.City.GridType;
+import generation.GridType;
 import haxe.ds.StringMap;
 
 class Data {

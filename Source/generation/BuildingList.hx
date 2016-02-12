@@ -2,7 +2,6 @@ package generation;
 
 import openfl.Assets;
 import openfl.Assets.AssetType;
-import generation.City.GridType;
 import utils.Grid;
 import haxe.ds.StringMap;
 
