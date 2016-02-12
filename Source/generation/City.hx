@@ -42,9 +42,7 @@ class City {
       }
     }
 
-    trace(parser.as_bitmap(GridType.ROAD));
     generate();
-    //parser.print(floor_grid);
   }
 
   private function generate() {
@@ -149,7 +147,8 @@ class City {
         count++;
       }
     }
-    canvas.addChild(new Bitmap(floor_bitmap));
+    //canvas.addChild(new Bitmap(floor_bitmap));
+    Layers.Add_Child(new Bitmap(floor_bitmap), 0);
 
     for (x in 0...object_grid.width) {
       for (y in 0...object_grid.height) {
@@ -161,7 +160,8 @@ class City {
         }
       }
     }
-    canvas.addChild(new Bitmap(object_bitmap));
+    //canvas.addChild(new Bitmap(object_bitmap));
+    Layers.Add_Child(new Bitmap(object_bitmap), 5);
     
     trace("Bitmap Count: " + count);
     trace("Total Canvas Children: " + canvas.numChildren);
