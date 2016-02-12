@@ -25,7 +25,7 @@ class Input {
     mouse      = [false, false, false];
     mouse_prev = [false, false, false];
     capture.graphics.beginFill(0, 0);
-    capture.graphics.drawRect(0, 0, 800, 600);
+    capture.graphics.drawRect(0, 0, 8000, 6000);
     capture.graphics.endFill();
     capture.x = 0;
     capture.y = 0;

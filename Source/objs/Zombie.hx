@@ -30,7 +30,7 @@ class Zombie {
     img = new Bitmap(Data.zombie);
     img.x = Std.int(x_);
     img.y = Std.int(y_);
-    Layers.Add_Child(img, Layers.Zombie);
+    Layers.Add_Child(img, Layers.LayerType.ZOMBIE);
     speed = Math.random() * Max_speed + Min_speed;
     target = new Vector2(x_, y_);
   }

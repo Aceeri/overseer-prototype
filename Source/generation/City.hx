@@ -20,7 +20,7 @@ class City {
   // per 10
   private var double_blocks: Int = 10;
   private var quad_blocks: Int = 3;
-  
+
   private var block_size: Int = 10;
   private var road_size: Int = 5;
 
@@ -31,7 +31,7 @@ class City {
     this.width = width;
     this.height = height;
 
-    floor_grid = new Grid(width * block_size + (width + 1) * road_size, height 
+    floor_grid = new Grid(width * block_size + (width + 1) * road_size, height
       * block_size + (height + 1) * road_size, GridType.ROAD);
     object_grid = new Grid(floor_grid.width, floor_grid.height, GridType.NONE);
     size_floor_grid = new Grid(width, height, null);
@@ -54,13 +54,14 @@ class City {
         var x = block_x * block_size + block_x * road_size + road_size;
         var y = block_y * block_size + block_y * road_size + road_size;
 
-        floor_grid.border(x - road_size, y - road_size, x, y, GridType.CROSSWALK);
-        floor_grid.border(x - road_size, y + block_size, x, y + block_size + road_size,
-          GridType.CROSSWALK);
-        floor_grid.border(x + block_size, y - road_size, x + block_size + road_size, y,
-          GridType.CROSSWALK);
-        floor_grid.border(x + block_size, y + block_size, x + block_size + road_size, 
-          y + block_size + road_size, GridType.CROSSWALK);
+        floor_grid.border(x - road_size, y - road_size, x, y,
+                                          GridType.CROSSWALK);
+        floor_grid.border(x - road_size, y + block_size, x, y + block_size +
+          road_size, GridType.CROSSWALK);
+        floor_grid.border(x + block_size, y - road_size, x + block_size +
+          road_size, y, GridType.CROSSWALK);
+        floor_grid.border(x + block_size, y + block_size, x + block_size +
+          road_size, y + block_size + road_size, GridType.CROSSWALK);
       }
     }
 
@@ -69,7 +70,7 @@ class City {
 
     // combine buildings
     combine(double_blocks, [new Point(0, 0), new Point(1, 0)]);
-    combine(quad_blocks, 
+    combine(quad_blocks,
       [new Point(0, 0), new Point(1, 0), new Point(0, 1), new Point(1, 1)]);
 
     // draw buildings/sidewalks
@@ -99,7 +100,7 @@ class City {
           }
 
           start_x = min_x * block_size + min_x * road_size + road_size;
-          end_x = max_x * block_size + max_x * road_size + road_size 
+          end_x = max_x * block_size + max_x * road_size + road_size
                   + block_size;
           start_y = min_y * block_size + min_y * road_size + road_size;
           end_y = max_y * block_size + max_y * road_size + road_size
@@ -148,7 +149,7 @@ class City {
       }
     }
     //canvas.addChild(new Bitmap(floor_bitmap));
-    Layers.Add_Child(new Bitmap(floor_bitmap), 0);
+    Layers.Add_Child(new Bitmap(floor_bitmap), Layers.LayerType.FLOOR);
 
     for (x in 0...object_grid.width) {
       for (y in 0...object_grid.height) {
@@ -161,8 +162,8 @@ class City {
       }
     }
     //canvas.addChild(new Bitmap(object_bitmap));
-    Layers.Add_Child(new Bitmap(object_bitmap), 5);
-    
+    Layers.Add_Child(new Bitmap(object_bitmap), Layers.LayerType.OBJECTS);
+
     trace("Bitmap Count: " + count);
     trace("Total Canvas Children: " + canvas.numChildren);
   }
