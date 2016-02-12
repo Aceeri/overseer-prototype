@@ -82,7 +82,7 @@ class UnitSelector {
     while ( units.length != 0 ) {
       units.pop();
       var t = highlighted_units.pop();
-      Layers.Rem_Child(t, Layers.Highlight);
+      Layers.Rem_Child(t, Layers.LayerType.HIGHLIGHT);
     }
   }
 
@@ -96,7 +96,7 @@ class UnitSelector {
     t.graphics.drawCircle(0, 0, 64);
     t.graphics.endFill();
     highlighted_units.push(t);
-    Layers.Add_Child(t, Layers.Highlight);
+    Layers.Add_Child(t, Layers.LayerType.HIGHLIGHT);
   }
 
   private function Harvest_Zombies(wx:Int, wy:Int, mx:Int, my:Int):Void {

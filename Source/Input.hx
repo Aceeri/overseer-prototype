@@ -23,7 +23,7 @@ class Input {
     mouse_pos  = new Vector2(0, 0);
     mouse      = [false, false, false];
     mouse_prev = [false, false, false];
-
+    
     stage.addEventListener(MouseEvent.MOUSE_DOWN,        mouse_event);
     stage.addEventListener(MouseEvent.MOUSE_UP,          mouse_event);
     stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, mouse_event);

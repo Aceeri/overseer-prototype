@@ -18,7 +18,7 @@ class ZombieNodeSpawnerMenuQueue {
   public static function initialize() {
     backdrop = new Bitmap(Data.zombie_spawner_queue);
     backdrop.visible = false;
-    Layers.Add_Child(backdrop, Layers.Zombie_spawner);
+    Layers.Add_Child(backdrop, LayerType.ZOMBIE_SPAWNER);
   }
 // public:
   public function new(x_:Int, y_:Int, node_:ZombieNodeSpawner) {
@@ -36,18 +36,18 @@ class ZombieNodeSpawnerMenuQueue {
   }
   public function destroy() {
     while ( queue.length != 0 )
-      Layers.Rem_Child(queue.pop(), Layers.Zombie_spawner);
+      Layers.Rem_Child(queue.pop(), LayerType.ZOMBIE_SPAWNER);
     backdrop.visible = false;
   }
   public function pop_queue() {
-    Layers.Rem_Child(queue.pop(), Layers.Zombie_spawner);
+    Layers.Rem_Child(queue.pop(), LayerType.ZOMBIE_SPAWNER);
   }
   public function push_queue(type:ZombieType) {
       var t : Int = type.getIndex();
       var bm : Bitmap = new Bitmap(Data.zombie_icons[t]);
       bm.x = backdrop.x + queue.length*32;
       bm.y = backdrop.y;
-      Layers.Add_Child(bm, Layers.Zombie_spawner);
+      Layers.Add_Child(bm, LayerType.ZOMBIE_SPAWNER);
       queue.push(bm);
   }
   public function close() {
