@@ -55,7 +55,8 @@ class Main extends Sprite {
     fps = new FPS();
     addChild(fps);
 
-    var city = new generation.City(2, 2);
+    var city = new generation.City(5, 5);
+    city.draw(this);
 
     button = new Button();
     button.addEventListener(MouseEvent.CLICK, function(event: MouseEvent) {
@@ -89,8 +90,25 @@ class Main extends Sprite {
 
   private function update(event: Event):Void {
     var current_time = lime.system.System.getTimer();
-    var delta = (current_time - prev_time) / 1000.0;
+    var delta = (current_time - prev_time);
     prev_time = current_time;
+
+    var speed = 0.3;
+    if (Input.keys[Keyboard.A]) {
+      this.x += delta * speed;
+    }
+
+    if (Input.keys[Keyboard.D]) {
+      this.x -= delta * speed;
+    }
+
+    if (Input.keys[Keyboard.W]) {
+      this.y += delta * speed;
+    }
+
+    if (Input.keys[Keyboard.S]) {
+      this.y -= delta * speed;
+    }
 
     Input.mouse_pos.x = Std.int(mouseX);
     Input.mouse_pos.y = Std.int(mouseY);
