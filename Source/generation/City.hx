@@ -147,7 +147,6 @@ class City {
         count++;
       }
     }
-    //canvas.addChild(new Bitmap(floor_bitmap));
     Layers.Add_Child(new Bitmap(floor_bitmap), 0);
 
     for (x in 0...object_grid.width) {
@@ -160,7 +159,6 @@ class City {
         }
       }
     }
-    //canvas.addChild(new Bitmap(object_bitmap));
     Layers.Add_Child(new Bitmap(object_bitmap), 5);
     
     trace("Bitmap Count: " + count);

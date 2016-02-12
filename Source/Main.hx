@@ -14,6 +14,7 @@ import ui.Console;
 import ui.Button;
 
 class Main extends Sprite {
+  var camera: Camera;
   var console: Console;
   var button: Button;
   var fps: FPS;
@@ -23,6 +24,8 @@ class Main extends Sprite {
     super();
     console = new Console();
     console.update(0);
+
+    
 
     #if js
       haxe.Log.trace = function(v: Dynamic, ?i):Void {
@@ -41,22 +44,17 @@ class Main extends Sprite {
   }
 
   public function init() {
-    Data.load_data(this);
+    camera = new Camera();
+    addChild(camera);
+
+    Data.load_data(camera);
     Layers.initialize();
-    Input.initialize();
+    Input.initialize(this);
 
     prev_time = lime.system.System.getTimer();
 
-    /*var bitmap = new Bitmap(Assets.getBitmapData("assets/openfl.png"));
-    bitmap.x = (stage.stageWidth - bitmap.width) / 2;
-    bitmap.y = (stage.stageHeight - bitmap.height) / 2;
-    addChild(bitmap);*/
-
-    fps = new FPS();
-    addChild(fps);
-
     var city = new generation.City(5, 5);
-    city.draw(this);
+    city.draw(camera);
 
     button = new Button();
     button.addEventListener(MouseEvent.CLICK, function(event: MouseEvent) {
@@ -69,8 +67,7 @@ class Main extends Sprite {
     addEventListener(Event.ENTER_FRAME, update);
 
     Interface.add_interface(console);
-
-    Interface.add_to(this);
+    Interface.add_to(camera);
     GameManager.start();
   }
 
@@ -90,32 +87,17 @@ class Main extends Sprite {
 
   private function update(event: Event):Void {
     var current_time = lime.system.System.getTimer();
-    var delta = (current_time - prev_time);
+    var delta = (current_time - prev_time) / 1000.0;
     prev_time = current_time;
 
-    var speed = 0.3;
-    if (Input.keys[Keyboard.A]) {
-      this.x += delta * speed;
-    }
-
-    if (Input.keys[Keyboard.D]) {
-      this.x -= delta * speed;
-    }
-
-    if (Input.keys[Keyboard.W]) {
-      this.y += delta * speed;
-    }
-
-    if (Input.keys[Keyboard.S]) {
-      this.y -= delta * speed;
-    }
+    camera.update(delta);
+    console.update(delta);
+    button.update(delta);
+    GameManager.update(delta);
 
     Input.mouse_pos.x = Std.int(mouseX);
     Input.mouse_pos.y = Std.int(mouseY);
     Input.mouse_x     = Std.int(Input.mouse_pos.x);
     Input.mouse_y     = Std.int(Input.mouse_pos.y);
-    console.update(delta);
-    button.update(delta);
-    GameManager.update(delta);
   }
 }

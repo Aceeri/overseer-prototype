@@ -3,6 +3,7 @@ package;
 import openfl.Vector;
 import openfl.events.MouseEvent;
 import openfl.display.Sprite;
+import openfl.display.DisplayObject;
 import openfl.geom.Point;
 import utils.Vector2;
 
@@ -16,26 +17,19 @@ class Input {
   public static var mouse_pos: Vector2;
   public static var mouse_x : Int;
   public static var mouse_y : Int;
-  public static var capture : Sprite;
 
-  public static function initialize() {
+  public static function initialize(stage: DisplayObject) {
     Input.keys = new Vector<Bool>(200);
-    capture = new Sprite();
     mouse_pos  = new Vector2(0, 0);
     mouse      = [false, false, false];
     mouse_prev = [false, false, false];
-    capture.graphics.beginFill(0, 0);
-    capture.graphics.drawRect(0, 0, 800, 600);
-    capture.graphics.endFill();
-    capture.x = 0;
-    capture.y = 0;
-    capture.addEventListener(MouseEvent.MOUSE_DOWN,        mouse_event);
-    capture.addEventListener(MouseEvent.MOUSE_UP,          mouse_event);
-    capture.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, mouse_event);
-    capture.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,   mouse_event);
-    capture.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,  mouse_event);
-    capture.addEventListener(MouseEvent.RIGHT_MOUSE_UP,    mouse_event);
-    Data.main.addChild(capture);
+
+    stage.addEventListener(MouseEvent.MOUSE_DOWN,        mouse_event);
+    stage.addEventListener(MouseEvent.MOUSE_UP,          mouse_event);
+    stage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, mouse_event);
+    stage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,   mouse_event);
+    stage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,  mouse_event);
+    stage.addEventListener(MouseEvent.RIGHT_MOUSE_UP,    mouse_event);
   }
 
   // Updates mouse_prev
@@ -54,5 +48,7 @@ class Input {
       case "rightMouseDown":  Input.mouse[Input.Mouse_right ] = true;
       case "rightMouseUp":    Input.mouse[Input.Mouse_right ] = false;
     }
+
+    trace(event.type);
   }
 }
