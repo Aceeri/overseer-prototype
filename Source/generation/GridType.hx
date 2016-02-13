@@ -13,6 +13,8 @@ enum GridType {
   SIDEWALK;
   ROAD;
   GRASS;
+  TILE;
+  WHITE_TILE;
 
   // Objects
   STONEWALL;
@@ -25,6 +27,10 @@ enum GridType {
   CRATE;
   CRATE_BIG;
   BARREL;
+  CHAIR;
+  COUNTER;
+  STUCCO;
+  BED;
 
   // Resources
   WEAPON;

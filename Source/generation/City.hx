@@ -20,7 +20,7 @@ class City {
 
   // 2x1, 2x2, 2x3, 3x3
   //private var layout_ratios: Array<Float> = [ 0.17, 0.1, 0.08, 0.05 ];
-  private var layout_ratios: Array<Float> = [ 0.0, 1.0, 0.0, 0.00 ];
+  private var layout_ratios: Array<Float> = [ 1.0, 0.0, 0.0, 0.00 ];
   private var layouts: Array<Array<Point>> = [
     [new Point(0, 0), new Point(1, 0)],
 
@@ -36,7 +36,7 @@ class City {
   ];
 
   private var tile: Int = 16;
-  private var tile_size: Int = 32;
+  private var tile_size: Int = 16;
   private var object_bitmap: BitmapData;
 
   private var block_size: Int = 10;

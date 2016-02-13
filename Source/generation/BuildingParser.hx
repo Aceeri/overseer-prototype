@@ -22,6 +22,8 @@ class BuildingParser {
     { char: "-", type: GridType.FLOOR },
     { char: "d", type: GridType.DUSTY_FLOOR },
     { char: ";", type: GridType.GRASS },
+    { char: "t", type: GridType.TILE },
+    { char: "w", type: GridType.WHITE_TILE },
   ];
 
   private var object = [
@@ -41,6 +43,10 @@ class BuildingParser {
     { char: "x", type: GridType.CRATE },
     { char: "X", type: GridType.CRATE_BIG },
     { char: "o", type: GridType.BARREL },
+    { char: "c", type: GridType.CHAIR },
+    { char: "=", type: GridType.COUNTER },
+    { char: "s", type: GridType.STUCCO },
+    { char: "b", type: GridType.BED },
 
     // resources
     { char: "w", type: GridType.WEAPON },
