@@ -25,8 +25,6 @@ class Main extends Sprite {
     console = new Console();
     console.update(0);
 
-    
-
     #if js
       haxe.Log.trace = function(v: Dynamic, ?i):Void {
         var msg = (i != null) ? i.fileName + ":" + i.lineNumber + ": " + v : v;
@@ -53,14 +51,8 @@ class Main extends Sprite {
 
     prev_time = lime.system.System.getTimer();
 
-    var city = new generation.City(5, 5);
+    var city = new generation.City(25, 25);
     city.draw(camera);
-
-    button = new Button();
-    button.addEventListener(MouseEvent.CLICK, function(event: MouseEvent) {
-      trace("left clicked " + fps);
-    });
-    Interface.add_interface(button);
 
     stage.addEventListener(KeyboardEvent.KEY_DOWN, key_down);
     stage.addEventListener(KeyboardEvent.KEY_UP, key_up);
@@ -97,7 +89,6 @@ class Main extends Sprite {
 
     camera.update(delta);
     console.update(delta);
-    button.update(delta);
     GameManager.update(delta);
   }
 }

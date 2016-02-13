@@ -13,16 +13,29 @@ class City {
   private var floor_grid: Grid<GridType>;
   private var object_grid: Grid<GridType>;
   private var size_floor_grid: Grid<Array<Point>>;
+  private var resource_grid: Grid<Resource>;
 
   private var parser: BuildingParser = new BuildingParser();
   private var list: BuildingList = new BuildingList();
 
-  // per 10
-  private var double_blocks: Int = 10;
-  private var quad_blocks: Int = 3;
+  // 2x1, 2x2, 2x3, 3x3
+  private var layout_ratios: Array<Float> = [ 0.17, 0.1, 0.08, 0.05 ];
+  private var layouts: Array<Array<Point>> = [
+    [new Point(0, 0), new Point(1, 0)],
+
+    [new Point(0, 0), new Point(1, 0), 
+     new Point(0, 1), new Point(1, 1)],
+
+    [new Point(0, 0), new Point(1, 0), new Point(2, 0), 
+     new Point(0, 1), new Point(1, 1), new Point(2, 1)],
+
+    [new Point(0, 0), new Point(1, 0), new Point(2, 0), 
+     new Point(0, 1), new Point(1, 1), new Point(2, 1),
+     new Point(0, 2), new Point(1, 2), new Point(2, 2)],
+  ];
 
   private var block_size: Int = 10;
-  private var road_size: Int = 6;
+  private var road_size: Int = 5;
 
   public var width: Int;
   public var height: Int;
@@ -65,13 +78,21 @@ class City {
       }
     }
 
-    var max_double = double_blocks;
-    var max_quad = quad_blocks;
+    var max_arr: Array<Int> = [];
+    for (index in 0...layout_ratios.length) {
+      max_arr[index] = Std.int(layout_ratios[index] * width * height);
+      trace(index + ": " + max_arr[index]);
+    }
 
     // combine buildings
-    combine(double_blocks, [new Point(0, 0), new Point(1, 0)]);
-    combine(quad_blocks,
-      [new Point(0, 0), new Point(1, 0), new Point(0, 1), new Point(1, 1)]);
+    for (i in 0...layouts.length) {
+      var index = i;
+      var layout = layouts[index];
+      trace("Layout: " + layout);
+      var max = max_arr[index];
+      combine(max, layout);
+    }
+    
 
     // draw buildings/sidewalks
     for (block_x in 0...width) {
@@ -79,7 +100,7 @@ class City {
         var cell = size_floor_grid.get(block_x, block_y);
         var start_x, end_x, start_y, end_y;
 
-        if (cell.length == 2 || cell.length == 4) {
+        if (cell.length > 1) {
           var min_x: Int = -1;
           var min_y: Int = -1;
           var max_x: Int = -1;
@@ -155,7 +176,7 @@ class City {
         if (object_grid.get(x, y) != GridType.NONE) {
           var bitmap = parser.as_bitmap(object_grid.get(x, y));
           object_bitmap.copyPixels(bitmap.bitmapData,
-            new Rectangle(0, 0, 16, 16), new Point(x * width, y * width));
+            new Rectangle(0, 0, width, width), new Point(x * width, y * width));
           count++;
         }
       }
@@ -215,6 +236,7 @@ class City {
   }
 
   private function combine(max: Int, layout: Array<Point>) {
+    var created = 0;
     for (i in 0...max) {
       var x = Std.random(size_floor_grid.width);
       var y = Std.random(size_floor_grid.height);
@@ -226,10 +248,6 @@ class City {
 
       var possibility = find_possibilities(x, y, layout);
 
-      for (i in 0...possibility.length) {
-        //trace(i + ": " + possibility[i]);
-      }
-
       if (possibility.length == 0) {
         continue;
       }
@@ -238,39 +256,12 @@ class City {
       for (j in 0...use.length) {
         size_floor_grid.set(Std.int(use[j].x), Std.int(use[j].y), use);
       }
+
+      created++;
     }
+
+    trace("max: " + max + ", created: " + created);
   }
 
-  private function minmax(arr: Array<Point>): { min_x: Int, min_y: Int,
-      max_x: Int, max_y: Int } {
-    var mix = -1;
-    var miy = -1;
-    var max = -1;
-    var may = -1;
-
-    for (j in 0...arr.length) {
-      if (mix == -1 || arr[j].x < mix) {
-        mix = Std.int(arr[j].x);
-      }
-
-      if (max == -1 || arr[j].x > max) {
-        max = Std.int(arr[j].x);
-      }
-
-      if (miy == -1 || arr[j].y < miy) {
-        miy = Std.int(arr[j].y);
-      }
-
-      if (may == -1 || arr[j].y > may) {
-        may = Std.int(arr[j].y);
-      }
-    }
-
-    return {
-      min_x: mix,
-      min_y: miy,
-      max_x: max,
-      max_y: may
-    }
-  }
+  //public function find_resource()
 }
