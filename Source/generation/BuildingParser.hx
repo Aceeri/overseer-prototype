@@ -29,7 +29,7 @@ class BuildingParser {
     { char: ".", type: GridType.NONE },
     { char: "*", type: GridType.BLOCK }, // use for big objects
     { char: "?", type: GridType.UNKNOWN },
-    
+
     // objects
     { char: "|", type: GridType.WALL },
     { char: "/", type: GridType.DOOR },
@@ -53,7 +53,7 @@ class BuildingParser {
 
   private var char_map: StringMap<GridType>;
   private var grid_map: EnumValueMap<GridType, String>;
-  
+
   public function new() {
     char_map = new StringMap();
     grid_map = new EnumValueMap();
@@ -69,9 +69,9 @@ class BuildingParser {
     }
   }
 
-  public function parse(path: String, width: Int, height: Int): 
+  public function parse(path: String, width: Int, height: Int):
                               {
-                                floor: Grid<GridType>, 
+                                floor: Grid<GridType>,
                                 object: Grid<GridType>,
                                 resource: Grid<Resource>
                               } {
@@ -90,16 +90,11 @@ class BuildingParser {
 
       var char = content.charAt(index);
 
-      /*if (upper && is_number(char)) {
-        partition = Std.parseInt(Std.string(partition) + char);
-        continue;
-      }*/
-
       if (char == "^") {
         count = 0;
         upper = true;
       }
-      
+
       if (char == "\r" || char == "\n") {
         continue;
       } else {
@@ -117,7 +112,7 @@ class BuildingParser {
           }
         }
 
-        for (r in 0...resources.length) { 
+        for (r in 0...resources.length) {
           if (char == resources[r]) {
             // set resources
             var amount = 50;

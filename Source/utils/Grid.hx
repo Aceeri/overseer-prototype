@@ -7,27 +7,31 @@ class Grid<T> {
   private var content: Array<T>;
 
   public function new(width: Int, height: Int, fillValue: T = null) {
-      this.width = width;
-      this.height = height;
-      clear(fillValue);
+    this.width = width;
+    this.height = height;
+    clear(fillValue);
   }
 
   public function get(x: Int, y: Int): T {
-      return content[y * width + x];
+    return content[y * width + x];
+  }
+
+  public function get_1D(x: Int): T {
+    return content[x];
   }
 
   public function set(x: Int, y: Int, value: T) {
-      if (in_range(x, y)) {
-        content[y * width + x] = value;
-      }
+    if (in_range(x, y)) {
+      content[y * width + x] = value;
+    }
   }
 
   public inline function in_range(x: Int, y: Int):Bool {
-      return x >= 0 && x < width && y >= 0 && y < height;
+    return x >= 0 && x < width && y >= 0 && y < height;
   }
 
   public function clear(fillValue: T = null) {
-      content = [for (i in 0...width * height) fillValue];
+    content = [for (i in 0...width * height) fillValue];
   }
 
   public function fill(x1: Int, y1: Int, x2: Int, y2: Int, value: T) {

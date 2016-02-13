@@ -2,19 +2,22 @@ package;
 
 import objs.ZombieNodeSpawner;
 import objs.ZombieNodeSpawnerMenu;
+import generation.City;
+import objs.Map;
 
 class GameManager {
-
   public static var camera: Camera;
   public static var zombies: Array<objs.Zombie>;
   public static var zombie_spawners: Array<ZombieNodeSpawner>;
   public static var unit_select: objs.UnitSelector;
   public static var zombie_spawner_menu: ZombieNodeSpawnerMenu;
   public static var dt: Float;
+  public static var city: City;
+  public static var map: Map;
 
   public static function start(camera_: Camera) {
     camera = camera_;
-
+    map = new Map();
     unit_select = new objs.UnitSelector();
     zombies = [];
     zombie_spawner_menu = null;

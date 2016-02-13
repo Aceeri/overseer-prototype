@@ -11,7 +11,7 @@ import openfl.display.Bitmap;
 
 class City {
   private var floor_grid: Grid<GridType>;
-  private var object_grid: Grid<GridType>;
+  public var object_grid: Grid<GridType>; // use this for collision
   private var size_floor_grid: Grid<Array<Point>>;
   private var resource_grid: Grid<Resource>;
 
@@ -24,13 +24,13 @@ class City {
   private var layouts: Array<Array<Point>> = [
     [new Point(0, 0), new Point(1, 0)],
 
-    [new Point(0, 0), new Point(1, 0), 
+    [new Point(0, 0), new Point(1, 0),
      new Point(0, 1), new Point(1, 1)],
 
-    [new Point(0, 0), new Point(1, 0), new Point(2, 0), 
+    [new Point(0, 0), new Point(1, 0), new Point(2, 0),
      new Point(0, 1), new Point(1, 1), new Point(2, 1)],
 
-    [new Point(0, 0), new Point(1, 0), new Point(2, 0), 
+    [new Point(0, 0), new Point(1, 0), new Point(2, 0),
      new Point(0, 1), new Point(1, 1), new Point(2, 1),
      new Point(0, 2), new Point(1, 2), new Point(2, 2)],
   ];
@@ -95,8 +95,6 @@ class City {
       var max = max_arr[index];
       combine(max, layout);
     }
-    
-    var first = true;
 
     // draw buildings/sidewalks
     for (block_x in 0...width) {
