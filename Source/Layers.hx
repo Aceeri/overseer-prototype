@@ -8,8 +8,8 @@ enum LayerType {
   BUILDING;
   HIGHLIGHT;
   ZOMBIE;
-  ZOMBIE_SPAWNER;
   OBJECTS;
+  ZOMBIE_SPAWNER;
 }
 
 class Layers {
