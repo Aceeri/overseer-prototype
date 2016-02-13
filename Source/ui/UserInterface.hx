@@ -1,6 +1,7 @@
 package ui;
 
-import openfl.display.Sprite;
+import openfl.display.DisplayObjectContainer;
+import openfl.display.DisplayObject;
 import openfl.display.Bitmap;
 import openfl.display.Shape;
 import openfl.geom.Point;
@@ -8,8 +9,10 @@ import openfl.geom.Rectangle;
 import openfl.events.MouseEvent;
 import openfl.Vector;
 
-class UserInterface extends Sprite {
-  public var children: Array<UserInterface> = [];
+import haxe.ds.StringMap;
+
+class UserInterface extends DisplayObjectContainer {
+  public var children: StringMap<DisplayObject>;
 
   private var shape: Shape;
   private var prev_size: Point;
@@ -18,12 +21,13 @@ class UserInterface extends Sprite {
 
   public var background_color: Int;
   public var background_alpha: Float;
-  public var image: Bitmap;
   public var size: Point;
   public var resizable: Bool;
 
   public function new() {
     super();
+
+    children = new StringMap();
 
     background_color = 0xFFFFFF;
     background_alpha = 1.0;
@@ -45,22 +49,25 @@ class UserInterface extends Sprite {
       shape.graphics.endFill();
     }
 
-    for (child in 0...children.length) {
-      children[child].update(delta);
+    for (child in children.iterator()) {
+      if (Std.is(child, UserInterface)) {
+        var user_interface = cast(child, UserInterface);
+        user_interface.update(delta);
 
-      if (visible != children[child].visible) {
-        children[child].visible = visible;
+        if (visible != user_interface.visible) {
+          user_interface.visible = visible;
+        }
       }
     }
   }
 
-  public function add(ui: UserInterface) {
-    children.push(ui);
+  public function add(name: String, ui: UserInterface) {
+    children.set(name, ui);
     addChild(ui);
   }
 
-  public function remove(ui: UserInterface) {
-    children.slice(children.indexOf(ui));
-    removeChild(ui);
+  public function remove(name: String) {
+    removeChild(children.get(name));
+    children.remove(name);
   }
 }

@@ -10,6 +10,7 @@ class Console extends UserInterface {
   private var fps: FPS;
   private var memory: Memory;
   private var topbar: UserInterface;
+  private var bottombar: UserInterface;
 
   private var lines: Array<TextField> = [];
   private var text: Array<String> = [];
@@ -26,14 +27,20 @@ class Console extends UserInterface {
   public function new() {
     super();
 
-    name = "Console";
-
     format = new TextFormat(Fonts.dejavu.fontName, 14);
 
-    size.x = 500;
-    size.y = 600;
     background_color = 0x2D2D30;
     background_alpha = 0.9;
+    size.x = 500;
+    size.y = 600;
+
+    bottombar = new UserInterface();
+    bottombar.size.x = size.x;
+    bottombar.size.y = size.y;
+    bottombar.background_color = background_color;
+    bottombar.background_alpha = 0.9;
+    add("bottombar", bottombar);
+
     scroll = 0.0;
     speed = 7.0;
     bounds = 8.0;
@@ -57,11 +64,12 @@ class Console extends UserInterface {
     topbar = new UserInterface();
     topbar.size.x = size.x;
     topbar.size.y = 40;
-    topbar.background_color = 0x2D2D30;
+    topbar.background_color = background_color;
+    topbar.background_alpha = 1.0;
+
     topbar.addChild(fps);
     topbar.addChild(memory);
-    topbar.background_alpha = 0.8;
-    children.push(topbar);
+    add("topbar", topbar);
 
     visible = false;
 
@@ -89,7 +97,7 @@ class Console extends UserInterface {
       new_line.wordWrap = true;
       //new_line.embedFonts = true;
       new_line.htmlText = '<font color="' + color + '>' + msg + '</font>';
-      addChild(new_line);
+      bottombar.addChild(new_line);
       lines.insert(0, new_line);
       count.insert(0, 1);
       text.insert(0, msg);
@@ -125,11 +133,9 @@ class Console extends UserInterface {
 
     scroll += speed * event.delta;
 
-    //var total_lines = 0;
     var total_y = 0.0;
     for (line in lines) {
       total_y += line.textHeight;
-      //total_lines += line.numLines;
     }
 
     if (scroll < 0.0 || total_y <= size.y - topbar.size.y) {

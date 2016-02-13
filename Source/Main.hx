@@ -60,7 +60,7 @@ class Main extends Sprite {
 
     Interface.add_interface(console);
     Interface.add_to(this);
-    GameManager.start();
+    GameManager.start(camera);
   }
 
   private function key_down(event: KeyboardEvent):Void {
