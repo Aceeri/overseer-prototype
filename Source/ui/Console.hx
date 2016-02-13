@@ -16,7 +16,7 @@ class Console extends UserInterface {
   private var text: Array<String> = [];
   private var count: Array<Int> = [];
 
-  private var max_lines = 10;
+  private var max_lines = 250;
   private var format: TextFormat;
   private var scroll: Float;
   private var speed: Float;

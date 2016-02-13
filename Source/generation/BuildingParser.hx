@@ -13,37 +13,34 @@ class BuildingParser {
     // special
     { char: ".", type: GridType.NONE },
     { char: "?", type: GridType.UNKNOWN },
+    { char: "*", type: GridType.BLOCK },
 
     // floor
     { char: "~", type: GridType.ROAD },
     { char: ":", type: GridType.CROSSWALK },
     { char: "+", type: GridType.SIDEWALK },
     { char: "-", type: GridType.FLOOR },
+    { char: "d", type: GridType.DUSTY_FLOOR },
     { char: ";", type: GridType.GRASS },
   ];
 
   private var object = [
     // special
     { char: ".", type: GridType.NONE },
+    { char: "*", type: GridType.BLOCK }, // use for big objects
     { char: "?", type: GridType.UNKNOWN },
-    { char: "*", type: GridType.UNKNOWN }, // DO NOT USE *
     
     // objects
     { char: "|", type: GridType.WALL },
     { char: "/", type: GridType.DOOR },
+    { char: "\\", type: GridType.LINKED_DOOR },
     { char: "[", type: GridType.FENCE },
     { char: "]", type: GridType.STONEWALL },
-    { char: "t", type: GridType.TREE },
-    { char: "t1", type: GridType.TREE1 },
-    { char: "t2", type: GridType.TREE2 },
-    { char: "t3", type: GridType.TREE3 },
-    { char: "t4", type: GridType.TREE4 },
-    { char: "t5", type: GridType.TREE5 },
-    { char: "t6", type: GridType.TREE6 },
-    { char: "t7", type: GridType.TREE7 },
-    { char: "t8", type: GridType.TREE8 },
-    { char: "t9", type: GridType.TREE9 },
+    { char: "T", type: GridType.TREE },
     { char: "~", type: GridType.WATER },
+    { char: "x", type: GridType.CRATE },
+    { char: "X", type: GridType.CRATE_BIG },
+    { char: "o", type: GridType.BARREL },
 
     // resources
     { char: "w", type: GridType.WEAPON },
@@ -93,10 +90,10 @@ class BuildingParser {
 
       var char = content.charAt(index);
 
-      if (upper && is_number(char)) {
+      /*if (upper && is_number(char)) {
         partition = Std.parseInt(Std.string(partition) + char);
         continue;
-      }
+      }*/
 
       if (char == "^") {
         count = 0;
@@ -116,12 +113,6 @@ class BuildingParser {
           if (!object_grid.in_range(x, y)) {
             continue;
           } else {
-
-            if (partition > 0) {
-              char += partition;
-              partition = 0;
-            }
-
             object_grid.set(x, y, as_grid("*" + char));
           }
         }
@@ -180,7 +171,7 @@ class BuildingParser {
     var data = Data.tile_map.get(Std.string(type));
 
     if (data == null) {
-      data = new BitmapData(16, 16);
+      data = new BitmapData(16, 16, true, 0x00FFFFFF);
     }
 
     return data;

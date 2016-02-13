@@ -3,10 +3,12 @@ package generation;
 enum GridType {
   // Special
   NONE;
+  BLOCK;
   UNKNOWN;
 
   // Floor
   FLOOR;
+  DUSTY_FLOOR;
   CROSSWALK;
   SIDEWALK;
   ROAD;
@@ -16,9 +18,13 @@ enum GridType {
   STONEWALL;
   WALL;
   DOOR;
+  LINKED_DOOR;
   FENCE;
-  TREE; TREE1; TREE2; TREE3; TREE4; TREE5; TREE6; TREE7; TREE8; TREE9;
+  TREE;
   WATER;
+  CRATE;
+  CRATE_BIG;
+  BARREL;
 
   // Resources
   WEAPON;

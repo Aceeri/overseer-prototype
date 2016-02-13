@@ -20,7 +20,7 @@ class City {
 
   // 2x1, 2x2, 2x3, 3x3
   //private var layout_ratios: Array<Float> = [ 0.17, 0.1, 0.08, 0.05 ];
-  private var layout_ratios: Array<Float> = [ 0.0, 0.0, 0.0, 1.00 ];
+  private var layout_ratios: Array<Float> = [ 0.0, 1.0, 0.0, 0.00 ];
   private var layouts: Array<Array<Point>> = [
     [new Point(0, 0), new Point(1, 0)],
 
@@ -96,6 +96,7 @@ class City {
       combine(max, layout);
     }
     
+    var first = true;
 
     // draw buildings/sidewalks
     for (block_x in 0...width) {
@@ -142,6 +143,7 @@ class City {
 
         if (layout != "") {
           var plug = parser.parse(layout, width, height);
+
           floor_grid.plug(start_x, start_y, end_x, end_y, plug.floor);
           object_grid.plug(start_x, start_y, end_x, end_y, plug.object);
         } else {
@@ -166,8 +168,12 @@ class City {
     for (x in 0...floor_grid.width) {
       for (y in 0...floor_grid.height) {
         var data = parser.as_bitmap(floor_grid.get(x, y));
-        floor_bitmap.copyPixels(data,
-          new Rectangle(0, 0, tile, tile), new Point(x * tile, y * tile));
+
+        if (floor_grid.get(x, y) != GridType.BLOCK) {
+          floor_bitmap.copyPixels(data,
+            new Rectangle(0, 0, data.width, data.height), new Point(x * tile, y * tile));
+        }
+
         count++;
       }
     }
@@ -180,8 +186,12 @@ class City {
       for (y in 0...object_grid.height) {
         if (object_grid.get(x, y) != GridType.NONE) {
           var data = parser.as_bitmap(object_grid.get(x, y));
-          object_bitmap.copyPixels(data,
-            new Rectangle(0, 0, tile, tile), new Point(x * tile, y * tile));
+
+          if (object_grid.get(x, y) != GridType.BLOCK) {
+            object_bitmap.copyPixels(data,
+              new Rectangle(0, 0, data.width, data.height), new Point(x * tile, y * tile));
+          }
+          
           count++;
         }
       }
@@ -275,5 +285,21 @@ class City {
     }
 
     trace("max: " + max + ", created: " + created);
+  }
+
+  private function get_partitions(data: BitmapData, size: Int): Grid<BitmapData> {
+    var x_count = Math.ceil(data.width / size);
+    var y_count = Math.ceil(data.height / size);
+    var grid = new Grid<BitmapData>(x_count, y_count);
+
+    for (x in 0...x_count) {
+      for (y in 0...y_count) {
+        var partition = new BitmapData(size, size);
+        partition.copyPixels(data, new Rectangle(x, y, size, size), new Point());
+        grid.set(x, y, partition);
+      }
+    }
+
+    return grid;
   }
 }
