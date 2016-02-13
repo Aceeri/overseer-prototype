@@ -36,6 +36,7 @@ class City {
   ];
 
   private var tile: Int = 16;
+  private var tile_size: Int = 32;
   private var object_bitmap: BitmapData;
 
   private var block_size: Int = 10;
@@ -170,7 +171,10 @@ class City {
         count++;
       }
     }
-    Layers.Add_Child(new Bitmap(floor_bitmap), Layers.LayerType.FLOOR);
+    var bitmap = new Bitmap(floor_bitmap);
+    bitmap.width = tile_size * floor_grid.width;
+    bitmap.height = tile_size * floor_grid.height;
+    Layers.Add_Child(bitmap, Layers.LayerType.FLOOR);
 
     for (x in 0...object_grid.width) {
       for (y in 0...object_grid.height) {
@@ -182,7 +186,10 @@ class City {
         }
       }
     }
-    Layers.Add_Child(new Bitmap(object_bitmap), Layers.LayerType.OBJECTS);
+    bitmap = new Bitmap(object_bitmap);
+    bitmap.width = tile_size * object_grid.width;
+    bitmap.height = tile_size * object_grid.height;
+    Layers.Add_Child(bitmap, Layers.LayerType.OBJECTS);
     trace("Bitmap Count: " + count);
     trace("Total Canvas Children: " + canvas.numChildren);
   }

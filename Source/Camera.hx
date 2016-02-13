@@ -3,8 +3,9 @@ package;
 import openfl.display.DisplayObjectContainer;
 import openfl.ui.Keyboard;
 import openfl.geom.Rectangle;
-import openfl.geom.Matrix;
+import openfl.geom.Matrix3D;
 import openfl.geom.Transform;
+import openfl.Vector;
 import lime.math.Vector2;
 import openfl.events.MouseEvent;
 
@@ -17,17 +18,15 @@ class Camera extends DisplayObjectContainer {
   private var destination: Vector2;
   private var current: Vector2;
 
-  private var current_scale = 1.0;
-  private var max_scale = 0.75;
-  private var min_scale = 1.5;
+  private var current_scale = 0.0;
+  private var max_scale = 0.0;
+  private var min_scale = 0.0;
 
   public function new() {
     super();
 
     destination = new Vector2();
     current = new Vector2(x, y);
-
-    addEventListener(MouseEvent.MOUSE_WHEEL, zoom);
 
   }
 
@@ -37,14 +36,6 @@ class Camera extends DisplayObjectContainer {
     } else if (event.delta < -3) {
       event.delta = -3;
     }
-
-    /*trace("Current Scale: " + current_scale);
-
-    var delta = event.delta * 50;
-    width += delta;
-    height += delta;
-    x += delta;
-    y += delta;*/
   }
 
   public function update(delta: Float) {

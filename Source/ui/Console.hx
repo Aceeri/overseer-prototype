@@ -16,7 +16,7 @@ class Console extends UserInterface {
   private var text: Array<String> = [];
   private var count: Array<Int> = [];
 
-  private var max_lines = 500;
+  private var max_lines = 10;
   private var format: TextFormat;
   private var scroll: Float;
   private var speed: Float;
@@ -104,7 +104,7 @@ class Console extends UserInterface {
       text.insert(0, msg);
 
       if (lines.length > max_lines) {
-        removeChild(lines.pop());
+        bottombar.removeChild(lines.pop());
         count.pop();
         text.pop();
       }

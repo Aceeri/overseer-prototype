@@ -95,7 +95,6 @@ class BuildingParser {
 
       if (upper && is_number(char)) {
         partition = Std.parseInt(Std.string(partition) + char);
-        trace("Partition: " + partition);
         continue;
       }
 

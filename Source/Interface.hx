@@ -11,7 +11,6 @@ class Interface {
 
   public static function add_to(canvas: DisplayObjectContainer) {
     canvas.addChild(sprite);
-
     Input.listeners(sprite);
   }
 
