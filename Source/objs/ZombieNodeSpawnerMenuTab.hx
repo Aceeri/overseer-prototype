@@ -22,8 +22,8 @@ class ZombieNodeSpawnerMenuTab {
     backdrop.visible = false;
     goal_img = new Bitmap(Data.zombie_spawn_tab_goal);
     goal_img.visible = false;
-    Layers.Add_Child(backdrop, LayerType.ZOMBIE_SPAWNER);
-    Layers.Add_Child(goal_img, LayerType.ZOMBIE);
+    Layers.Add_Child(backdrop, Layers.LayerType.ZOMBIE_SPAWNER);
+    Layers.Add_Child(goal_img, Layers.LayerType.ZOMBIE_SPAWNER);
   }
 // public:
   public function new(x_:Int, y_:Int, node_:ZombieNodeSpawner) {
@@ -34,8 +34,8 @@ class ZombieNodeSpawnerMenuTab {
     backdrop.y = y_;
     backdrop.visible = true;
     goal_img.visible = true;
-    goal_img.x = node.Ret_Spawn_Goal().x;
-    goal_img.y = node.Ret_Spawn_Goal().y;
+    goal_img.x = node.ret_spawn_goal().x;
+    goal_img.y = node.ret_spawn_goal().y;
   }
   public function destroy() {
     backdrop.visible = false;
@@ -55,12 +55,19 @@ class ZombieNodeSpawnerMenuTab {
       }
     }
   }
+  public function set_pos(x_:Int, y_:Int) : Void {
+    pos.x = x_;
+    pos.y = y_;
+    backdrop.x = x_;
+    backdrop.y = y_;
+  }
   public function update() : Void {
+    trace("update tab");
     dragging = dragging && Input.mouse[Input.Mouse_left];
     if ( dragging ) {
       goal_img.x = Input.mouse_x - 8;
       goal_img.y = Input.mouse_y - 8;
-      node.Set_Spawn_Goal(new Vector2(Input.mouse_x, Input.mouse_y));
+      node.set_spawn_goal(new Vector2(Input.mouse_x, Input.mouse_y));
     }
   }
   public function close() {

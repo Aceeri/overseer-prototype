@@ -5,7 +5,7 @@ import openfl.ui.Keyboard;
 import openfl.geom.Rectangle;
 import openfl.geom.Matrix;
 import openfl.geom.Transform;
-import lime.math.Vector2;
+import utils.Vector2;
 import openfl.events.MouseEvent;
 
 class Camera extends DisplayObjectContainer {
@@ -24,8 +24,8 @@ class Camera extends DisplayObjectContainer {
   public function new() {
     super();
 
-    destination = new Vector2();
-    current = new Vector2(x, y);
+    destination = new Vector2(0, 0);
+    current = new Vector2(0, 0);
 
     addEventListener(MouseEvent.MOUSE_WHEEL, zoom);
 
@@ -46,6 +46,8 @@ class Camera extends DisplayObjectContainer {
     x += delta;
     y += delta;*/
   }
+
+  public function Ret_Offset() : Vector2 { return destination; }
 
   public function update(delta: Float) {
 
@@ -71,7 +73,7 @@ class Camera extends DisplayObjectContainer {
       destination.y -= delta * speed;
     }
 
-    // Clamping 
+    // Clamping
     if (-destination.x < 0) {
       destination.x = 0;
     } else if (-destination.x > width - screen_x) {
@@ -85,8 +87,8 @@ class Camera extends DisplayObjectContainer {
     if (-destination.y > height - screen_y) {
       destination.y = -height + screen_y;
     }
-    
-    current = Vector2.interpolate(current, destination, 0.8);
+
+    current = utils.Vector2.interpolate(current, destination, 0.8);
     x = current.x;
     y = current.y;
   }
