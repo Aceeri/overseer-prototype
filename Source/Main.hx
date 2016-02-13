@@ -26,13 +26,15 @@ class Main extends Sprite {
     console.update(0);
     #if js
       haxe.Log.trace = function(v: Dynamic, ?i):Void {
-        var msg = (i != null) ? i.fileName + ":" + i.lineNumber + ": " + v : v;
+        var msg = (i != null) ? i.fileName + ":" +
+                              i.lineNumber + ": " + v : v;
         console.log(v);
         untyped __js__("console").log(msg);
       }
     #else
       haxe.Log.trace = function(v: Dynamic, ?i):Void {
-        var msg = (i != null) ? i.fileName + ":" + i.lineNumber + ": " + v : v;
+        var msg = (i != null) ? i.fileName + ":"
+                              + i.lineNumber + ": " + v : v;
         console.log(msg);
       }
     #end
@@ -50,7 +52,8 @@ class Main extends Sprite {
 
     prev_time = lime.system.System.getTimer();
 
-    var city = new generation.City(25, 25);
+    var city = new generation.City(10, 10);
+    GameManager.city = city;
     city.draw(camera);
 
     stage.addEventListener(KeyboardEvent.KEY_DOWN, key_down);

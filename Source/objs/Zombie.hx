@@ -1,5 +1,7 @@
 package objs;
 
+import flash.Vector;
+import haxeAStar.IntPoint;
 import openfl.display.Bitmap;
 import utils.Vector2;
 
@@ -22,10 +24,11 @@ class Zombie {
   private var speed: Float;
   private var height: Int;
   private var target: Vector2;
+  private var path: Vector<IntPoint>;
 // public:
   public function new(x_:Int, y_:Int) {
     pos = new Vector2(x_, y_);
-    dim = new Vector2(32, 32);
+    dim = new Vector2(16, 16);
     img = new Bitmap(Data.zombie);
     img.x = Std.int(x_);
     img.y = Std.int(y_);
@@ -54,7 +57,15 @@ class Zombie {
     pos.y = y;
   }
   public function set_target_pos(v:Vector2):Void {
-      target.x = v.x;
-      target.y = v.y;
+    target.x = v.x;
+    target.y = v.y;
+    var pos_grid: Vector2 = new Vector2(pos.x/32, pos.y/32);
+    var tar_grid: Vector2 = new Vector2(target.x/32, target.y/32);
+    path = GameManager.map.ret_path(pos_grid, tar_grid);
+    if ( path == null )
+      trace("Zombie Target Pos is null!");
+    else {
+      trace(path);
+    }
   }
 }

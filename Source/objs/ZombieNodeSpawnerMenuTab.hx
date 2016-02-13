@@ -62,7 +62,6 @@ class ZombieNodeSpawnerMenuTab {
     backdrop.y = y_;
   }
   public function update() : Void {
-    trace("update tab");
     dragging = dragging && Input.mouse[Input.Mouse_left];
     if ( dragging ) {
       goal_img.x = Input.mouse_x - 8;

@@ -21,7 +21,6 @@ class ZombieNodeSpawner {
     timer = 0;
     spawn_queue = [];
     img = new Bitmap(Data.zombie_spawner);
-    trace(img);
     img.x = x_;
     img.y = y_;
     Layers.Add_Child(img, Layers.LayerType.ZOMBIE_SPAWNER);

@@ -55,7 +55,5 @@ class Input {
       case "rightMouseDown":  Input.mouse[Input.Mouse_right ] = true;
       case "rightMouseUp":    Input.mouse[Input.Mouse_right ] = false;
     }
-
-    trace(event.type);
   }
 }
