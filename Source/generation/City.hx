@@ -19,7 +19,8 @@ class City {
   private var list: BuildingList = new BuildingList();
 
   // 2x1, 2x2, 2x3, 3x3
-  private var layout_ratios: Array<Float> = [ 0.17, 0.1, 0.08, 0.05 ];
+  //private var layout_ratios: Array<Float> = [ 0.17, 0.1, 0.08, 0.05 ];
+  private var layout_ratios: Array<Float> = [ 0.0, 0.0, 0.0, 1.00 ];
   private var layouts: Array<Array<Point>> = [
     [new Point(0, 0), new Point(1, 0)],
 

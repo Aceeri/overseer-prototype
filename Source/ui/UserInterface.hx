@@ -18,11 +18,13 @@ class UserInterface extends DisplayObjectContainer {
   private var prev_size: Point;
   private var prev_color: Int;
   private var prev_alpha: Float;
+  private var prev_position: Point;
 
   public var background_color: Int;
   public var background_alpha: Float;
   public var size: Point;
   public var resizable: Bool;
+  public var clip: Bool;
 
   public function new() {
     super();
@@ -33,6 +35,7 @@ class UserInterface extends DisplayObjectContainer {
     background_alpha = 1.0;
     size = new Point(100, 100);
     resizable = false;
+    clip = false;
 
     shape = new Shape();
     addChild(shape);
@@ -40,9 +43,15 @@ class UserInterface extends DisplayObjectContainer {
 
   public function update(delta: Float) {
 
-    if (size != prev_size || background_color != prev_color ||
-                             background_alpha != prev_alpha) {
-      scrollRect = new Rectangle(0, 0, size.x, size.y);
+    if (new Point(x, y) != prev_position || size != prev_size 
+      || background_color != prev_color || background_alpha != prev_alpha) {
+
+      if (clip) {
+        scrollRect = new Rectangle(0, 0, size.x, size.y);
+      } else {
+        scrollRect = null;
+      }
+
       shape.graphics.clear();
       shape.graphics.beginFill(background_color, background_alpha);
       shape.graphics.drawRect(0, 0, size.x, size.y);

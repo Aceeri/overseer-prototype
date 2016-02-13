@@ -33,6 +33,7 @@ class Console extends UserInterface {
     background_alpha = 0.9;
     size.x = 500;
     size.y = 600;
+    clip = true;
 
     bottombar = new UserInterface();
     bottombar.size.x = size.x;
