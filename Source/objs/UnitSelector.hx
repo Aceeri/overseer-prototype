@@ -11,6 +11,7 @@ class UnitSelector {
   private var sel_start :Vector2;
   private var rectangle :Shape;
   private var highlighted_units:Array<Shape>;
+  private var do_not_select: Bool;
 
   public function new() : Void {
     units = new Array<Zombie>();
@@ -63,18 +64,29 @@ class UnitSelector {
         }
       }
     }
-    if ( !mouse_down && Input.mouse[Input.Mouse_left] ) {
+    if ( !mouse_down && Input.mouse[Input.Mouse_left] && !do_not_select ) {
+      trace("Starting select");
+      mouse_down = true;
       sel_start = new Vector2(Std.int(Input.mouse_pos.x),
                               Std.int(Input.mouse_pos.y));
     }
-    mouse_down = Input.mouse[Input.Mouse_left];
-
+    if ( !Input.mouse[Input.Mouse_left] )
+      mouse_down = false;
+    if ( do_not_select && !Input.mouse[Input.Mouse_left] ) {
+      do_not_select = false;
+    }
     // move highlights on selected zombies
     for ( z in 0...units.length ) {
       var pos = units[z].ret_position();
       highlighted_units[z].x = pos.x + units[z].ret_dimension().x;
       highlighted_units[z].y = pos.y + units[z].ret_dimension().y;
     }
+  }
+
+  public function clear_select() : Void {
+    rectangle.graphics.clear();
+    mouse_down = false;
+    do_not_select = true;
   }
 
   // -- private util --

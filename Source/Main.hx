@@ -24,7 +24,6 @@ class Main extends Sprite {
     super();
     console = new Console();
     console.update(0);
-
     #if js
       haxe.Log.trace = function(v: Dynamic, ?i):Void {
         var msg = (i != null) ? i.fileName + ":" + i.lineNumber + ": " + v : v;

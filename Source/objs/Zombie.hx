@@ -20,7 +20,6 @@ class Zombie {
   private var pos : Vector2;
   private var dim : Vector2;
   private var speed: Float;
-  private var width: Int;
   private var height: Int;
   private var target: Vector2;
 // public:
