@@ -5,7 +5,7 @@ class Resource {
   private var type: GridType;
 
   public function new(amount_: Int, type_: GridType) {
-    available = amount;
+    available = amount_;
     type = type_;
   }
 

@@ -34,6 +34,9 @@ class City {
      new Point(0, 2), new Point(1, 2), new Point(2, 2)],
   ];
 
+  private var tile: Int = 16;
+  private var object_bitmap: BitmapData;
+
   private var block_size: Int = 10;
   private var road_size: Int = 5;
 
@@ -81,14 +84,12 @@ class City {
     var max_arr: Array<Int> = [];
     for (index in 0...layout_ratios.length) {
       max_arr[index] = Std.int(layout_ratios[index] * width * height);
-      trace(index + ": " + max_arr[index]);
     }
 
     // combine buildings
     for (i in 0...layouts.length) {
       var index = i;
       var layout = layouts[index];
-      trace("Layout: " + layout);
       var max = max_arr[index];
       combine(max, layout);
     }
@@ -155,17 +156,16 @@ class City {
   }
 
   public function draw(canvas: DisplayObjectContainer) {
-    var width = 16;
     var count = 0;
 
-    var floor_bitmap = new BitmapData(width * floor_grid.width, width * floor_grid.height, true, 0x00FFFFFF);
-    var object_bitmap = new BitmapData(width * object_grid.width, width * object_grid.height, true, 0x00FFFFFF);
+    var floor_bitmap = new BitmapData(tile * floor_grid.width, tile * floor_grid.height, true, 0x00FFFFFF);
+    object_bitmap = new BitmapData(tile * object_grid.width, tile * object_grid.height, true, 0x00FFFFFF);
 
     for (x in 0...floor_grid.width) {
       for (y in 0...floor_grid.height) {
-        var bitmap = parser.as_bitmap(floor_grid.get(x, y));
-        floor_bitmap.copyPixels(bitmap.bitmapData,
-          new Rectangle(0, 0, width, width), new Point(x * width, y * width));
+        var data = parser.as_bitmap(floor_grid.get(x, y));
+        floor_bitmap.copyPixels(data,
+          new Rectangle(0, 0, tile, tile), new Point(x * tile, y * tile));
         count++;
       }
     }
@@ -174,9 +174,9 @@ class City {
     for (x in 0...object_grid.width) {
       for (y in 0...object_grid.height) {
         if (object_grid.get(x, y) != GridType.NONE) {
-          var bitmap = parser.as_bitmap(object_grid.get(x, y));
-          object_bitmap.copyPixels(bitmap.bitmapData,
-            new Rectangle(0, 0, width, width), new Point(x * width, y * width));
+          var data = parser.as_bitmap(object_grid.get(x, y));
+          object_bitmap.copyPixels(data,
+            new Rectangle(0, 0, tile, tile), new Point(x * tile, y * tile));
           count++;
         }
       }
@@ -184,6 +184,12 @@ class City {
     Layers.Add_Child(new Bitmap(object_bitmap), Layers.LayerType.OBJECTS);
     trace("Bitmap Count: " + count);
     trace("Total Canvas Children: " + canvas.numChildren);
+  }
+
+  public function modify(x: Int, y: Int, new_type: GridType) {
+    var data = parser.as_bitmap(new_type);
+    object_bitmap.copyPixels(data,
+      new Rectangle(0, 0, tile, tile), new Point(x * tile, y * tile));
   }
 
   // [(0, 0), (1, 0)] 2x1
@@ -262,6 +268,4 @@ class City {
 
     trace("max: " + max + ", created: " + created);
   }
-
-  //public function find_resource()
 }

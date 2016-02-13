@@ -1,10 +1,7 @@
 package generation;
 
-//import js.html.File;
-//import js.html.FileReader;
-
 import openfl.Assets;
-import openfl.display.Bitmap;
+import openfl.display.BitmapData;
 import openfl.geom.Point;
 import utils.Grid;
 
@@ -35,6 +32,8 @@ class BuildingParser {
 		{ char: "f", type: GridType.FOOD },
 	];
 
+	private var resources = [ "w", "a", "m", "f" ];
+
 	private var char_map: StringMap<GridType>;
 	private var grid_map: EnumValueMap<GridType, String>;
 	
@@ -49,12 +48,17 @@ class BuildingParser {
 	}
 
 	public function parse(path: String, width: Int, height: Int): 
-															{floor: Grid<GridType>, object: Grid<GridType>} {
+															{
+																floor: Grid<GridType>, 
+																object: Grid<GridType>,
+																resource: Grid<Resource>
+															} {
 		var content = Assets.getText(path);
 		var upper = false;
 
 		var floor_grid = new Grid(width, height);
 		var object_grid = new Grid(width, height);
+		var resource_grid = new Grid(width, height);
 
 		var count = 0;
 		for (index in 0...content.length) {
@@ -85,6 +89,15 @@ class BuildingParser {
 					}
 				}
 
+				for (r in 0...resources.length) { 
+					if (char == resources[r]) {
+						// set resources
+						var amount = 50;
+						resource_grid.set(x, y, new Resource(amount, as_grid(char)));
+						break;
+					}
+				}
+
 				
 				count++;
 			}
@@ -92,7 +105,8 @@ class BuildingParser {
 
 		return {
 			floor: floor_grid,
-			object: object_grid
+			object: object_grid,
+			resource: resource_grid
 		}
 	}
 
@@ -116,17 +130,14 @@ class BuildingParser {
 		return char;
 	}
 
-	public function as_bitmap(type: GridType): Bitmap {
+	public function as_bitmap(type: GridType): BitmapData {
 		var data = Data.tile_map.get(Std.string(type));
-		var bitmap;
 
 		if (data == null) {
-			bitmap = new Bitmap();
-		} else {
-			bitmap = new Bitmap(data);
+			data = new BitmapData(16, 16);
 		}
 
-		return bitmap;
+		return data;
 	}
 
 	public function print(grid: Grid<GridType>) {
