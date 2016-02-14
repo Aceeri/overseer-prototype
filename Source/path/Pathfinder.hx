@@ -1,7 +1,6 @@
 package path;
 
-import openfl.geom.Point;
-
+import utils.Vector2;
 import utils.Grid;
 
 class Pathfinder {
@@ -12,7 +11,7 @@ class Pathfinder {
     nodes = nodes_;
   }
 
-  public function construct_path(start_node: Node, end_node: Node): Array<Point> {
+  public function construct_path(start_node: Node, end_node: Node): Array<Vector2> {
     if (start_node == null || end_node == null) {
       trace("START OR END IS NULL");
       return [];
@@ -50,7 +49,7 @@ class Pathfinder {
             return [];
           } else {
             var node_path = reconstruct_path(closest);
-            return as_point(node_path);
+            return as_vector2(node_path);
           }
         }
       }
@@ -80,7 +79,7 @@ class Pathfinder {
       if (current == end_node) {
         trace("FOUND PATH");
         var node_path = reconstruct_path(current);
-        return as_point(node_path);
+        return as_vector2(node_path);
       }
 
       open_set.sort(sort);
@@ -92,13 +91,13 @@ class Pathfinder {
   }
 
   private function surrounding(node: Node): Array<Node> {
-    var possible = [new Point(-1, -1), new Point(0, -1), new Point(1, -1),
-                    new Point(-1, 0),                    new Point(1, 0),
-                    new Point(-1, 1),  new Point(0, 1),  new Point(1, 1)];
+    var possible = [new Vector2(-1, -1), new Vector2(0, -1), new Vector2(1, -1),
+                    new Vector2(-1, 0),                    new Vector2(1, 0),
+                    new Vector2(-1, 1),  new Vector2(0, 1),  new Vector2(1, 1)];
     var result = [];
 
     for (index in 0...possible.length) {
-      var coordinate = new Point(node.x + possible[index].x, node.y + possible[index].y);
+      var coordinate = new Vector2(node.x + possible[index].x, node.y + possible[index].y);
       var x = Std.int(coordinate.x);
       var y = Std.int(coordinate.y);
 
@@ -144,11 +143,11 @@ class Pathfinder {
     return result;
   }
 
-  private function as_point(arr: Array<Node>): Array<Point> {
+  private function as_vector2(arr: Array<Node>): Array<Vector2> {
     var point_path = [];
 
     for (index in 0...arr.length) {
-      point_path[index] = new Point(arr[index].x, arr[index].y);
+      point_path[index] = new Vector2(arr[index].x, arr[index].y);
     }
 
     return point_path;
