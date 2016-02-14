@@ -39,7 +39,7 @@ class City {
   ];
 
   private var tile: Int = 16;
-  private var tile_size: Int = 16;
+  private var tile_size: Int = 32;
   private var object_bitmap: BitmapData;
 
   private var block_size: Int = 10;

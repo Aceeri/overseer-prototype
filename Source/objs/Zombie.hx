@@ -1,9 +1,9 @@
 package objs;
 
 import flash.Vector;
-import haxeAStar.IntPoint;
 import openfl.display.Bitmap;
 import utils.Vector2;
+import openfl.geom.Point;
 
 enum ZombieType {
   Normal;
@@ -24,7 +24,7 @@ class Zombie {
   private var speed: Float;
   private var height: Int;
   private var target: Vector2;
-  private var path: Vector<IntPoint>;
+  private var path: Vector<Point>;
 // public:
   public function new(x_:Int, y_:Int) {
     pos = new Vector2(x_, y_);
@@ -61,7 +61,7 @@ class Zombie {
     target.y = v.y;
     var pos_grid: Vector2 = new Vector2(pos.x/32, pos.y/32);
     var tar_grid: Vector2 = new Vector2(target.x/32, target.y/32);
-    path = GameManager.map.ret_path(pos_grid, tar_grid);
+    //path = GameManager.map.ret_path(pos_grid, tar_grid);
     if ( path == null )
       trace("Zombie Target Pos is null!");
     else {
