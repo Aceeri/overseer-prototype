@@ -12,10 +12,17 @@ class Object {
 
 	public function new(x_: Float, y_: Float) {
 		position = new Vector2(x_, y_);
-		size = new Vector2(16, 16);
+		velocity = new Vector2();
+		size = new Vector2(32, 32);
 	}
 
 	public function update(delta: Float) {
-		//position = position.add(cast(velocity.scalar(delta), Point));
+		position = position.add(velocity.scalar(delta));
+
+		// update image;
+		image.x = position.x;
+		image.y = position.y;
+		image.width = size.x;
+		image.height = size.y;
 	}
 }

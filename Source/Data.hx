@@ -71,7 +71,8 @@ class Data {
       var matched = regex.match(path);
 
       if (matched) {
-        tile_map.set(regex.matched(1), load(path));
+        trace("MATCHED: " + regex.matched(1));
+        image_map.set(regex.matched(1), load(path));
       }
     }
   }
