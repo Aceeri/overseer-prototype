@@ -1,6 +1,6 @@
-package objs;
+package objs.zombie;
 
-import objs.Zombie;
+import objs.zombie.Zombie;
 import utils.Vector2;
 import utils.Util;
 import openfl.display.Shape;

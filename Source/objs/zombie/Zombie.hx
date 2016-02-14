@@ -1,4 +1,4 @@
-package objs;
+package objs.zombie;
 
 import flash.Vector;
 import openfl.display.Bitmap;

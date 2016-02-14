@@ -1,12 +1,12 @@
-package objs;
+package objs.zombie;
 
 import openfl.display.Bitmap;
 import utils.Vector2;
 import utils.Util;
-import objs.Zombie;
-import objs.ZombieNodeSpawner;
-import objs.ZombieNodeSpawnerMenuQueue;
-import objs.ZombieNodeSpawnerMenuTab;
+import objs.zombie.Zombie;
+import objs.zombie.ZombieNodeSpawner;
+import objs.zombie.ZombieNodeSpawnerMenuQueue;
+import objs.zombie.ZombieNodeSpawnerMenuTab;
 
 class ZombieNodeSpawnerMenu {
 // private:

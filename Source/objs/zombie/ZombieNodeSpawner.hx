@@ -1,7 +1,7 @@
-package objs;
+package objs.zombie;
 
-import objs.Zombie;
-import objs.ZombieNodeSpawnerMenu;
+import objs.zombie.Zombie;
+import objs.zombie.ZombieNodeSpawnerMenu;
 import openfl.display.Bitmap;
 import utils.Util;
 import utils.Vector2;

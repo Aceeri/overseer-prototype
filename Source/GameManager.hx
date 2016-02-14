@@ -1,21 +1,23 @@
 package;
 
-import objs.ZombieNodeSpawner;
-import objs.ZombieNodeSpawnerMenu;
+import objs.zombie.Zombie;
+import objs.zombie.ZombieNodeSpawner;
+import objs.zombie.ZombieNodeSpawnerMenu;
+import objs.zombie.UnitSelector;
 import generation.City;
 
 class GameManager {
   public static var camera: Camera;
-  public static var zombies: Array<objs.Zombie>;
+  public static var zombies: Array<Zombie>;
   public static var zombie_spawners: Array<ZombieNodeSpawner>;
-  public static var unit_select: objs.UnitSelector;
+  public static var unit_select: UnitSelector;
   public static var zombie_spawner_menu: ZombieNodeSpawnerMenu;
   public static var dt: Float;
   public static var city: City;
 
   public static function start(camera_: Camera) {
     camera = camera_;
-    unit_select = new objs.UnitSelector();
+    unit_select = new UnitSelector();
     zombies = [];
     zombie_spawner_menu = null;
     ZombieNodeSpawnerMenu.initialize();
