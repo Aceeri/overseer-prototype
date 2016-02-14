@@ -7,9 +7,9 @@ enum LayerType {
   FLOOR;
   BUILDING;
   HIGHLIGHT;
-  ZOMBIE;
+  HUMANOID;
   OBJECTS;
-  ZOMBIE_SPAWNER;
+  SPAWNER;
 }
 
 class Layers {

@@ -23,7 +23,7 @@ class ZombieNodeSpawner {
     img = new Bitmap(Data.zombie_spawner);
     img.x = x_;
     img.y = y_;
-    Layers.Add_Child(img, Layers.LayerType.ZOMBIE_SPAWNER);
+    Layers.Add_Child(img, Layers.LayerType.SPAWNER);
   }
   public function Add_To_Queue(zt:ZombieType) {
     spawn_queue.insert(0, zt);

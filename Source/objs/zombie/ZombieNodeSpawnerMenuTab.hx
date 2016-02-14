@@ -22,8 +22,8 @@ class ZombieNodeSpawnerMenuTab {
     backdrop.visible = false;
     goal_img = new Bitmap(Data.zombie_spawn_tab_goal);
     goal_img.visible = false;
-    Layers.Add_Child(backdrop, Layers.LayerType.ZOMBIE_SPAWNER);
-    Layers.Add_Child(goal_img, Layers.LayerType.ZOMBIE_SPAWNER);
+    Layers.Add_Child(backdrop, Layers.LayerType.SPAWNER);
+    Layers.Add_Child(goal_img, Layers.LayerType.SPAWNER);
   }
 // public:
   public function new(x_:Int, y_:Int, node_:ZombieNodeSpawner) {

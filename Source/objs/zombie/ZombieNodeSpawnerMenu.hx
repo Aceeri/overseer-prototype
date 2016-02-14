@@ -44,7 +44,7 @@ class ZombieNodeSpawnerMenu {
   public static function initialize() {
     backdrop = new Bitmap(Data.zombie_spawner_backdrop);
     backdrop.visible = false;
-    Layers.Add_Child(backdrop, Layers.LayerType.ZOMBIE_SPAWNER);
+    Layers.Add_Child(backdrop, Layers.LayerType.SPAWNER);
     ZombieNodeSpawnerMenuTab.initialize();
     ZombieNodeSpawnerMenuQueue.initialize();
   }

@@ -10,11 +10,13 @@ import openfl.display.BitmapData;
 import openfl.display.Bitmap;
 
 import path.Node;
+import path.Pathfinder;
 
 class City {
   private var floor_grid: Grid<GridType>;
   public var object_grid: Grid<GridType>;
   public var nodes: Grid<Node>; // use this for collision
+  public var pathfinder: Pathfinder;
   private var size_floor_grid: Grid<Array<Point>>;
   private var resource_grid: Grid<Resource>;
 
@@ -160,6 +162,7 @@ class City {
     floor_grid.border(0, 0, floor_grid.width, floor_grid.height, GridType.SIDEWALK);
 
     nodes = generate_nodes(object_grid);
+    pathfinder = new Pathfinder(nodes);
   }
 
   public function draw(canvas: DisplayObjectContainer) {

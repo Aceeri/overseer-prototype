@@ -20,6 +20,7 @@ class Data {
   public static var zombie_spawner_tab : BitmapData;
 
   public static var tile_map: StringMap<BitmapData>;
+  public static var image_map: StringMap<BitmapData>;
 
   private static function load ( s : String ) {
     return Assets.getBitmapData(s);
@@ -40,7 +41,9 @@ class Data {
       load("assets/zeds/zombie_ico.png"),
       load("assets/zeds/zombie_ico.png")
     ];
+
     load_tiles();
+    load_images();
   }
 
   public static function load_tiles() {
@@ -56,15 +59,20 @@ class Data {
         tile_map.set(regex.matched(1), load(path));
       }
     }
+  }
 
-    /*var item_iter = tile_map.iterator();
-    var key_iter = tile_map.keys();
-    while (true) {
-      if (key_iter.hasNext() && item_iter.hasNext()) {
-        trace(key_iter.next() + ": " + item_iter.next());
-      } else {
-        break;
+  public static function load_images() {
+    image_map = new StringMap();
+
+    var files = Assets.list(AssetType.IMAGE);
+    for (index in 0...files.length) {
+      var path = files[index];
+      var regex = ~/assets\/images\/(.+)\..+/;
+      var matched = regex.match(path);
+
+      if (matched) {
+        tile_map.set(regex.matched(1), load(path));
       }
-    }*/
+    }
   }
 }

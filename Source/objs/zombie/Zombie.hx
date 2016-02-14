@@ -32,7 +32,7 @@ class Zombie {
     img = new Bitmap(Data.zombie);
     img.x = Std.int(x_);
     img.y = Std.int(y_);
-    Layers.Add_Child(img, Layers.LayerType.ZOMBIE);
+    Layers.Add_Child(img, Layers.LayerType.HUMANOID);
     speed = Math.random() * Max_speed + Min_speed;
     target = new Vector2(x_, y_);
   }
@@ -52,11 +52,11 @@ class Zombie {
 
   public function ret_position():Vector2 { return pos; }
   public function ret_dimension():Vector2 { return dim; }
-  public function set_position(x:Int, y:Int):Void {
+  public function set_position(x:Int, y:Int) {
     pos.x = x;
     pos.y = y;
   }
-  public function set_target_pos(v:Vector2):Void {
+  public function set_target_pos(v:Vector2) {
     target.x = v.x;
     target.y = v.y;
     var pos_grid: Vector2 = new Vector2(pos.x/32, pos.y/32);

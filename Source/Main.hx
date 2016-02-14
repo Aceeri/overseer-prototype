@@ -60,9 +60,6 @@ class Main extends Sprite {
     GameManager.city = city;
     city.draw(camera);
 
-    pathfinder = new Pathfinder(city.nodes);
-    trace("PATH: " + pathfinder.construct_path(city.nodes.get(0, 0), city.nodes.get(6, 6)));
-
     stage.addEventListener(KeyboardEvent.KEY_DOWN, key_down);
     stage.addEventListener(KeyboardEvent.KEY_UP, key_up);
     addEventListener(Event.ENTER_FRAME, update);
