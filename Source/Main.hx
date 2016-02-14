@@ -13,11 +13,15 @@ import openfl.ui.Keyboard;
 import ui.Console;
 import ui.Button;
 
+import path.Pathfinder;
+import path.Node;
+
+import utils.Grid;
+
 class Main extends Sprite {
   var camera: Camera;
   var console: Console;
-  var button: Button;
-  var fps: FPS;
+  var pathfinder: Pathfinder;
   var prev_time: Int;
 
   public function new() {
@@ -56,6 +60,9 @@ class Main extends Sprite {
     GameManager.city = city;
     city.draw(camera);
 
+    pathfinder = new Pathfinder(city.nodes);
+    trace("PATH: " + pathfinder.construct_path(city.nodes.get(0, 0), city.nodes.get(6, 6)));
+
     stage.addEventListener(KeyboardEvent.KEY_DOWN, key_down);
     stage.addEventListener(KeyboardEvent.KEY_UP, key_up);
     addEventListener(Event.ENTER_FRAME, update);
@@ -65,7 +72,7 @@ class Main extends Sprite {
     GameManager.start(camera);
   }
 
-  private function key_down(event: KeyboardEvent):Void {
+  private function key_down(event: KeyboardEvent) {
     if (!Input.keys[event.keyCode]) {
       if (event.keyCode == Keyboard.BACKQUOTE) {
         console.visible = !console.visible;
@@ -75,7 +82,7 @@ class Main extends Sprite {
     Input.keys[event.keyCode] = true;
   }
 
-  private function key_up(event: KeyboardEvent):Void {
+  private function key_up(event: KeyboardEvent) {
     Input.keys[event.keyCode] = false;
   }
 

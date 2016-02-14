@@ -9,9 +9,12 @@ import openfl.display.DisplayObject;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
 
+import path.Node;
+
 class City {
   private var floor_grid: Grid<GridType>;
-  public var object_grid: Grid<GridType>; // use this for collision
+  public var object_grid: Grid<GridType>;
+  public var nodes: Grid<Node>; // use this for collision
   private var size_floor_grid: Grid<Array<Point>>;
   private var resource_grid: Grid<Resource>;
 
@@ -155,6 +158,8 @@ class City {
     }
 
     floor_grid.border(0, 0, floor_grid.width, floor_grid.height, GridType.SIDEWALK);
+
+    nodes = generate_nodes(object_grid);
   }
 
   public function draw(canvas: DisplayObjectContainer) {
@@ -299,5 +304,19 @@ class City {
     }
 
     return grid;
+  }
+
+  private function generate_nodes(grid: Grid<GridType>): Grid<Node> {
+    var node_grid = new Grid(grid.width, grid.height, null);
+
+    for (x in 0...grid.width) {
+      for (y in 0...grid.height) {
+        if (grid.get(x, y) == GridType.NONE) {
+          node_grid.set(x, y, new Node(x, y));
+        }
+      }
+    }
+
+    return node_grid;
   }
 }
