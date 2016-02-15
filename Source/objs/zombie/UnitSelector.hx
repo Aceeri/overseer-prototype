@@ -51,6 +51,7 @@ class UnitSelector {
 
       if ( !Input.mouse[Input.Mouse_left] ) {
         // end highlight
+        trace("Ending highlight");
         rectangle.graphics.clear();
         if ( wx < 5 && wy < 5 ) { // issue a command
           var t_pos = new Vector2(Std.int(Input.mouse_pos.x),
@@ -76,6 +77,7 @@ class UnitSelector {
       do_not_select = false;
     }
     // move highlights on selected zombies
+    trace("Moving highlight on selected zombies");
     for ( z in 0...units.length ) {
       var pos = units[z].ret_position();
       highlighted_units[z].x = pos.x + units[z].ret_dimension().x;
@@ -113,6 +115,7 @@ class UnitSelector {
 
   private function Harvest_Zombies(wx:Int, wy:Int, mx:Int, my:Int):Void {
     // 'harvest' zombies into units
+    trace("Harvesting zombies");
     var dimensions: Vector2 = new Vector2(wx, wy),
         position  : Vector2 = new Vector2(Std.int(mx), Std.int(my));
     Clear_Units();

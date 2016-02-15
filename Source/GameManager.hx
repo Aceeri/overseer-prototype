@@ -41,15 +41,13 @@ class GameManager {
     // -- update --
     unit_select.update();
     for ( z in zombies )
-      z.update();
+      z.update(dt);
     for ( z in zombie_spawners ) {
       z.update();
     }
-
     for (survivor in survivors) {
       survivor.update(dt_);
     }
-
     if ( zombie_spawner_menu != null )
       zombie_spawner_menu.update();
     // post-update
