@@ -18,11 +18,15 @@ import path.Node;
 
 import utils.Grid;
 
+import objs.particles.Rain;
+import objs.particles.Generator;
+
 class Main extends Sprite {
   var camera: Camera;
   var console: Console;
   var pathfinder: Pathfinder;
   var prev_time: Int;
+  var weather: Generator;
 
   public function new() {
     super();
@@ -60,6 +64,9 @@ class Main extends Sprite {
     GameManager.city = city;
     city.draw(camera);
 
+    weather = new Rain();
+    Layers.Add_Child(weather.canvas, Layers.LayerType.WEATHER);
+
     stage.addEventListener(KeyboardEvent.KEY_DOWN, key_down);
     stage.addEventListener(KeyboardEvent.KEY_UP, key_up);
     addEventListener(Event.ENTER_FRAME, update);
@@ -92,6 +99,8 @@ class Main extends Sprite {
     Input.mouse_pos.y = Std.int(mouseY - camera.y);
     Input.mouse_x     = Std.int(Input.mouse_pos.x);
     Input.mouse_y     = Std.int(Input.mouse_pos.y);
+
+    weather.update(delta);
 
     camera.update(delta);
     console.update(delta);

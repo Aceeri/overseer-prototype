@@ -10,6 +10,7 @@ enum LayerType {
   HUMANOID;
   OBJECTS;
   SPAWNER;
+  WEATHER;
 }
 
 class Layers {
