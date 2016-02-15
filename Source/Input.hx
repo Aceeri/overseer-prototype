@@ -7,6 +7,8 @@ import openfl.display.DisplayObject;
 import openfl.geom.Point;
 import utils.Vector2;
 
+import objs.Behavior;
+
 class Input {
   private static var stage: DisplayObject;
   public static var keys: Vector<Bool>;
@@ -37,6 +39,8 @@ class Input {
     canvas.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,   mouse_event);
     canvas.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,  mouse_event);
     canvas.addEventListener(MouseEvent.RIGHT_MOUSE_UP,    mouse_event);
+
+    canvas.addEventListener(MouseEvent.CLICK, click);
   }
 
   // Updates mouse_prev
@@ -46,7 +50,7 @@ class Input {
     mouse_prev[2] = mouse[2];
   }
 
-  private static function mouse_event(event: MouseEvent):Void {
+  private static function mouse_event(event: MouseEvent) {
     switch ( event.type ) {
       case "mouseDown":       Input.mouse[Input.Mouse_left  ] = true;
       case "mouseUp":         Input.mouse[Input.Mouse_left  ] = false;
@@ -55,5 +59,14 @@ class Input {
       case "rightMouseDown":  Input.mouse[Input.Mouse_right ] = true;
       case "rightMouseUp":    Input.mouse[Input.Mouse_right ] = false;
     }
+  }
+
+  private static function click(event: MouseEvent) {
+    var offset = GameManager.camera.Ret_Offset();
+    var x = Std.int((event.stageX - offset.x) / 32);
+    var y = Std.int((event.stageY - offset.y) / 32);
+    GameManager.survivors[0].behavior = Behavior.STAY;
+    GameManager.survivors[0].update(0);
+    GameManager.survivors[0].behavior = Behavior.MOVE(x, y);
   }
 }

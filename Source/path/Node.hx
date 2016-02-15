@@ -10,6 +10,7 @@ class Node {
   public function new(x_: Float, y_: Float) {
     x = x_;
     y = y_;
+    parent = null;
   }
 
   public function get_heuristic(from: Node): Float {
@@ -18,5 +19,9 @@ class Node {
 
   public function to_string(): String {
     return "(" + x + ", " + y + ")";
+  }
+
+  public function clone(): Node {
+    return new Node(x, y);
   }
 }

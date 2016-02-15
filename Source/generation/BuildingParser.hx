@@ -24,6 +24,10 @@ class BuildingParser {
     { char: ";", type: GridType.GRASS },
     { char: "t", type: GridType.TILE },
     { char: "w", type: GridType.WHITE_TILE },
+
+    // doors
+    { char: "/", type: GridType.DOOR },
+    { char: "\\", type: GridType.LINKED_DOOR },
   ];
 
   private var object = [
@@ -34,8 +38,6 @@ class BuildingParser {
 
     // objects
     { char: "|", type: GridType.WALL },
-    { char: "/", type: GridType.DOOR },
-    { char: "\\", type: GridType.LINKED_DOOR },
     { char: "[", type: GridType.FENCE },
     { char: "]", type: GridType.STONEWALL },
     { char: "T", type: GridType.TREE },
