@@ -91,7 +91,6 @@ class Main extends Sprite {
   }
 
   private function update(event: Event):Void {
-    trace("Enter main update frame");
     var current_time = lime.system.System.getTimer();
     var delta = (current_time - prev_time) / 1000.0;
     prev_time = current_time;
