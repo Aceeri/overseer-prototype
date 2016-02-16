@@ -2,12 +2,16 @@ package objs.survivor;
 
 import openfl.display.Bitmap;
 import haxe.ds.StringMap;
+import objs.particles.Bullet;
 import haxe.ds.EnumValueMap;
 
 import generation.Resource;
 import generation.GridType;
 
 class Survivor extends Humanoid {
+  // private:
+    private var attack_cooldown: Float;
+  // public:
   public var inventory: EnumValueMap<GridType, Int>;
   public var skills: StringMap<Float>;
   // scavenging - harvest faster
@@ -19,17 +23,19 @@ class Survivor extends Humanoid {
 
   public var health: Float = 100.0; // reach 0 die
   public var hunger: Float = 100.0; // reach 0 lose health
-  public var sanity: Float = 100.0; // reach less than 10 and goes insane (possibly shoots allies)
+  public var sanity: Float = 100.0; // reach less than 10 and goes
+                                    // insane (possibly shoots allies)
   public var fright: Float = 0.0; // reach 20+, lose sanity
 
   private var harvest: Float = 0.0; // timer
 
-  public function new(x_: Float, y_: Float) {
+  public function new(x_: Float, y_: Float) : Void {
     super(x_, y_);
 
     image = new Bitmap(Data.image_map.get("survivor"));
     Layers.Add_Child(image, Layers.LayerType.HUMANOID);
     GameManager.survivors.push(this);
+    attack_cooldown = 0;
 
     inventory.set(GridType.FOOD, 0);
     inventory.set(GridType.AMMO, 0);
@@ -46,10 +52,20 @@ class Survivor extends Humanoid {
   public override function update(delta: Float) {
     super.update(delta);
 
+    if ( attack_cooldown > 0 ) attack_cooldown -= delta;
+
+    for ( z in GameManager.zombies ) {
+      if ( position.distance( z.position ) < 32*8 ) {
+        trace("DETECTING ZOMBIE TO ATTACK");
+        behavior = Behavior.ATTACK( z );
+        break;
+      }
+    }
+
     switch (behavior) {
       case HARVEST(resource):
-        var grid_distance = position.scalar(1/32).distance(resource.position);
-        if (grid_distance <= 1) { // next to
+        var grid_dist = position.scalar(1/32).distance(resource.position);
+        if (grid_dist <= 1) { // next to
           harvest += delta;
         } else {
           harvest = 0; // reset if too far
@@ -63,6 +79,14 @@ class Survivor extends Humanoid {
         }
       case FIND(type):
 
+      case ATTACK(humanoid):
+        if ( attack_cooldown <= 0 ) {
+          // for now just assume bullet.
+          // create "bullet" animation
+          trace("ATTACKING ZOMBIE AT " + humanoid.position.to_string());
+          new Bullet(position, humanoid.position);
+          attack_cooldown = 2;
+        }
       default:
     }
 

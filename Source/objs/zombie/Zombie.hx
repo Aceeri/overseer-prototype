@@ -29,7 +29,6 @@ class Zombie extends Humanoid {
 
   override public function update(dt:Float) : Void {
     super.update(dt);
-    trace("update");
   }
 
   public function ret_position():Vector2 { return position; }
@@ -39,7 +38,6 @@ class Zombie extends Humanoid {
     position.y = y;
   }
   public function set_target_pos(v:Vector2) {
-    trace("setting target pos");
     behavior = Behavior.MOVE(Std.int(v.x / 32), Std.int(v.y / 32));
   }
 }

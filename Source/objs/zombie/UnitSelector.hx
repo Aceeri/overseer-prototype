@@ -12,16 +12,24 @@ class UnitSelector {
   private var rectangle :Shape;
   private var highlighted_units:Array<Shape>;
   private var do_not_select: Bool;
+  private var tile_highlight :Shape;
 
   public function new() : Void {
     units = new Array<Zombie>();
     rectangle = new Shape();
+    tile_highlight = new Shape();
+    tile_highlight.graphics.clear();
+    tile_highlight.graphics.beginFill(0xCC66FF);
+    tile_highlight.graphics.drawRect(0, 0, Math.abs(32), Math.abs(32));
+    tile_highlight.graphics.endFill();
+    tile_highlight.visible = false;
     highlighted_units = new Array<Shape>();
     Data.main.addChild(rectangle);
+    Layers.Add_Child(tile_highlight, Layers.LayerType.HIGHLIGHT);
   }
 
   public function update() : Void {
-    if ( mouse_down ) {
+    if ( mouse_down && GameManager.zombie_spawner_menu == null ) {
       // update rectangle highlight
       var sx: Int = Std.int(sel_start.x);
       var sy: Int = Std.int(sel_start.y);
@@ -74,13 +82,21 @@ class UnitSelector {
     if ( do_not_select && !Input.mouse[Input.Mouse_left] ) {
       do_not_select = false;
     }
-    
+
     // move highlights on selected zombies
     for ( z in 0...units.length ) {
       var pos = units[z].ret_position();
       highlighted_units[z].x = pos.x + units[z].ret_dimension().x;
       highlighted_units[z].y = pos.y + units[z].ret_dimension().y;
     }
+
+    // highlight square
+    if ( units.length > 0 && GameManager.zombie_spawner_menu == null ) {
+      tile_highlight.visible = true;
+      tile_highlight.x = Input.mouse_x - Input.mouse_x%32;
+      tile_highlight.y = Input.mouse_y - Input.mouse_y%32;
+    } else
+      tile_highlight.visible = false;
   }
 
   public function clear_select() : Void {

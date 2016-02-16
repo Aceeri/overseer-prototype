@@ -6,6 +6,7 @@ import objs.zombie.Zombie;
 import objs.zombie.ZombieNodeSpawner;
 import objs.zombie.ZombieNodeSpawnerMenu;
 import objs.zombie.UnitSelector;
+import objs.particles.Bullet;
 import generation.City;
 import path.Pathfinder;
 
@@ -15,6 +16,7 @@ class GameManager {
   public static var zombie_spawners: Array<ZombieNodeSpawner>;
   public static var unit_select: UnitSelector;
   public static var zombie_spawner_menu: ZombieNodeSpawnerMenu;
+  public static var bullets : Array<Bullet>;
 
   public static var survivors: Array<Survivor>;
   public static var survivor_spawners: Array<SurvivorSpawner>;
@@ -26,6 +28,7 @@ class GameManager {
     camera = camera_;
     unit_select = new UnitSelector();
     zombies = [];
+    bullets = [];
     zombie_spawner_menu = null;
     ZombieNodeSpawnerMenu.initialize();
     zombie_spawners = [new ZombieNodeSpawner(300, 300)];
@@ -50,7 +53,10 @@ class GameManager {
     for (survivor in survivors) {
       survivor.update(dt_);
     }
-    
+
+    for ( b in bullets )
+      b.update(dt_);
+
     if ( zombie_spawner_menu != null )
       zombie_spawner_menu.update();
 
