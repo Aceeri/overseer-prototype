@@ -4,13 +4,13 @@ import openfl.display.Bitmap;
 import haxe.ds.StringMap;
 import objs.particles.Bullet;
 import haxe.ds.EnumValueMap;
+import objs.survivor.Weapon;
 
 import generation.Resource;
 import generation.GridType;
 
 class Survivor extends Humanoid {
   // private:
-    private var attack_cooldown: Float;
   // public:
   public var inventory: EnumValueMap<GridType, Int>;
   public var skills: StringMap<Float>;
@@ -29,6 +29,8 @@ class Survivor extends Humanoid {
 
   private var harvest: Float = 0.0; // timer
 
+  private var weapon : Int = -1;
+
   public function new(x_: Float, y_: Float) : Void {
     super(x_, y_);
 
@@ -41,7 +43,7 @@ class Survivor extends Humanoid {
     inventory.set(GridType.AMMO, 0);
     inventory.set(GridType.MEDICAL, 0);
 
-    skills.set("scavenging", 0.3); // per second
+    skills.set("scavenging", 0.3);
     skills.set("accuracy", 50.0);
     skills.set("strength", 3.0);
     skills.set("medic", 1.0);
@@ -49,17 +51,26 @@ class Survivor extends Humanoid {
     skills.set("melee", 15.0);
   }
 
+  public function destroy() : Void {
+    super.destroy();
+    Layers.Rem_Child(image, Layers.LayerType.HUMANOID);
+    GameManager.survivors.remove(this);
+  }
+
   public override function update(delta: Float) {
-    super.update(delta);
-
-    if ( attack_cooldown > 0 ) attack_cooldown -= delta;
-
     for ( z in GameManager.zombies ) {
-      if ( position.distance( z.position ) < 32*8 ) {
-        trace("DETECTING ZOMBIE TO ATTACK");
+      if ( position.distance( z.position ) <= 32*Weapon.weapons[weapon] ) {
         behavior = Behavior.ATTACK( z );
         break;
       }
+    }
+    super.update(delta);
+
+    if ( frame_attacked_humanoid != null ) {
+      frame_attacked_humanoid.add_health(-3);
+      frame_attacked_humanoid = null;
+      new Bullet(position, humanoid.position);
+      zattack_timer = 2.0;
     }
 
     switch (behavior) {
@@ -78,30 +89,15 @@ class Survivor extends Humanoid {
           }
         }
       case FIND(type):
-
-      case ATTACK(humanoid):
-        if ( attack_cooldown <= 0 ) {
-          // for now just assume bullet.
-          // create "bullet" animation
-          trace("ATTACKING ZOMBIE AT " + humanoid.position.to_string());
-          new Bullet(position, humanoid.position);
-          attack_cooldown = 2;
-        }
-      default:
     }
 
 
     checks(delta);
   }
 
-  public function die() {
-    Layers.Rem_Child(image, Layers.LayerType.HUMANOID);
-    GameManager.survivors.remove(this);
-  }
-
   private function checks(delta: Float) {
     if (health <= 0) {
-      die();
+      destroy();
     }
 
     if (hunger > 0) {

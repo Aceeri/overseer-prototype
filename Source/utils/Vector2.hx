@@ -20,6 +20,12 @@ class Vector2 {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
+  // distance between two tiles of vectors, the vectors should not
+  // be the tile position, rather the position of the object.
+  static public function distance_tile(vec:Vector2) : Float {
+    return Std.int(x - vec.x) + Std.int(y - vec.y);
+  }
+
   public function to_string() : String {
     return '$x,  $y';
   }
@@ -92,7 +98,7 @@ class Vector2 {
   }
 
   // Getters & Setters
-  private function get_length ():Float {
+  public function get_length ():Float {
     return Math.sqrt (x * x + y * y);
   }
 }

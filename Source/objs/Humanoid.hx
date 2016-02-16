@@ -5,26 +5,47 @@ import utils.Vector2;
 import openfl.geom.Point;
 
 class Humanoid {
+// private statics:
+  private static var health_bar_colours : Array<Int> = [
+    0x21BA35,
+    0xA1BA21,
+    0xBA7A21,
+    0xBA2121
+  ];
+// public:
   public var position: Vector2;
   public var velocity: Vector2;
   public var speed: Float;
   public var size: Vector2;
   public var image: Bitmap;
+  public var health_bar: Shape;
   public var path: Array<Vector2>;
-  private var move_timer: Float;
   public var behavior: Behavior;
+// private:
+  private var attack_timer: Float;
+  private var move_timer: Float;
   private var path_bitmap: Bitmap;
+  private var health: Int;
+  private var max_health: Int;
+  private var health_prev: Int;
+  private var frame_attacked_humanoid: Humanoid;
 
-  public function new(x_: Float, y_: Float) {
+  public function new(x_: Float, y_: Float, max_health_:Int) {
     position = new Vector2(x_, y_);
     speed = 5;
     size = new Vector2(32, 32);
     move_timer = 0.0;
+    max_health = max_health_;
 
     behavior = Behavior.STAY;
   }
 
+  public function destroy() : Void {
+
+  }
+
   public function update(delta: Float) {
+    if ( attack_timer <= 0 ) attack_timer -= delta;
     switch(behavior) {
       case STAY:
         path = null;
@@ -61,13 +82,33 @@ class Humanoid {
         } else {
           behavior = Behavior.STAY;
         }
+      case ATTACK(humanoid):
+        if ( attack_timer < 0 ) {
+          frame_attacked_humanoid = humanoid;
+        }
       default:
     }
 
-    // update image;
+    // update image
     image.x = position.x;
     image.y = position.y;
     image.width = size.x;
     image.height = size.y;
+    health_bar.x = position.x;
+    health_bar.y = position.y;
+    if ( health != health_prev ) { // health changed
+      health_prev = health;
+      var h_dt : Float = health/health_max;
+      health_bar.graphics.clear();
+      var h_int : Int = Math.max(Math.min(3, Std.int(h_dt * 4)), 0);
+      health_bar.graphics.beginFill(health_bar_colours[h_int]);
+      health_bar.graphics.drawRect(0, 0, h_dt*32, 4);
+      health_bar.graphics.endFill();
+    }
   }
+
+  public function add_health(hp:Int) : Void {
+    health += hp;
+  }
+  public function ret_health() : Int { return health; }
 }
