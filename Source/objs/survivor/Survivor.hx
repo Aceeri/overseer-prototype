@@ -7,7 +7,7 @@ import generation.Resource;
 import generation.GridType;
 
 class Survivor extends Humanoid {
-  public var inventory: StringMap<Resource>;
+  public var inventory: EnumValueMap<Int>;
   public var skills: StringMap<Float>;
   // scavenging - harvest faster
   // accuracy - shoot more accurately
@@ -21,6 +21,8 @@ class Survivor extends Humanoid {
   public var sanity: Float = 100.0; // reach less than 10 and goes insane (possibly shoots allies)
   public var fright: Float = 0.0; // reach 20+, lose sanity
 
+  private var harvest: Float = 0.0; // timer
+
   public function new(x_: Float, y_: Float) {
     super(x_, y_);
 
@@ -28,11 +30,11 @@ class Survivor extends Humanoid {
     Layers.Add_Child(image, Layers.LayerType.HUMANOID);
     GameManager.survivors.push(this);
 
-    inventory.set("food", new Resource(0, GridType.FOOD));
-    inventory.set("ammo", new Resource(0, GridType.AMMO));
-    inventory.set("medical", new Resource(0, GridType.MEDICAL));
+    inventory.set(GridType.FOOD, 0);
+    inventory.set(GridType.AMMO, 0);
+    inventory.set(GridType.MEDICAL, 0);
 
-    skills.set("scavenging", 1.0);
+    skills.set("scavenging", 0.3); // per second
     skills.set("accuracy", 50.0);
     skills.set("strength", 3.0);
     skills.set("medic", 1.0);
@@ -43,6 +45,34 @@ class Survivor extends Humanoid {
   public override function update(delta: Float) {
     super.update(delta);
 
+    switch (behavior) {
+      case HARVEST(resource) {
+        var grid_distance = position.scalar(1/32).distance(resource.position);
+        if (grid_distance <= 1) { // next to
+          harvest += delta;
+        } else {
+          harvest = 0; // reset if too far
+        }
+
+        if (harvest * skills.get("scavenging") >= 1.0) {
+          var current = inventory.get(resouce.type);
+          if (current != null) {
+            inventory.set(resource.type, current + 1);
+          }
+        }
+      }
+    }
+
+
+    checks();
+  }
+
+  public function die() {
+    Layers.Rem_Child(image, Layers.LayerType.HUMANOID);
+    GameManager.survivors.remove(this);
+  }
+
+  private function checks() {
     if (health <= 0) {
       die();
     }
@@ -57,11 +87,6 @@ class Survivor extends Humanoid {
     if (fright > 20.0) {
       sanity -= delta / 5.0;
     }
-  }
-
-  public function die() {
-    Layers.Rem_Child(image, Layers.LayerType.HUMANOID);
-    GameManager.survivors.remove(this);
   }
 
   private function harvest(resource: Resource) {

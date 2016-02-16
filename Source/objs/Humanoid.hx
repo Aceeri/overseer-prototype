@@ -22,7 +22,6 @@ class Humanoid {
     move_timer = 0.0;
 
     behavior = Behavior.STAY;
-    //behavior = Behavior.MOVE(96, 102);
   }
 
   public function update(delta: Float) {
