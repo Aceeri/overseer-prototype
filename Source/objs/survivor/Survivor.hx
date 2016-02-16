@@ -2,12 +2,13 @@ package objs.survivor;
 
 import openfl.display.Bitmap;
 import haxe.ds.StringMap;
+import haxe.ds.EnumValueMap;
 
 import generation.Resource;
 import generation.GridType;
 
 class Survivor extends Humanoid {
-  public var inventory: EnumValueMap<Int>;
+  public var inventory: EnumValueMap<GridType, Int>;
   public var skills: StringMap<Float>;
   // scavenging - harvest faster
   // accuracy - shoot more accurately
@@ -46,7 +47,7 @@ class Survivor extends Humanoid {
     super.update(delta);
 
     switch (behavior) {
-      case HARVEST(resource) {
+      case HARVEST(resource):
         var grid_distance = position.scalar(1/32).distance(resource.position);
         if (grid_distance <= 1) { // next to
           harvest += delta;
@@ -55,16 +56,18 @@ class Survivor extends Humanoid {
         }
 
         if (harvest * skills.get("scavenging") >= 1.0) {
-          var current = inventory.get(resouce.type);
+          var current = inventory.get(resource.type);
           if (current != null) {
             inventory.set(resource.type, current + 1);
           }
         }
-      }
+      case FIND(type):
+
+      default:
     }
 
 
-    checks();
+    checks(delta);
   }
 
   public function die() {
@@ -72,7 +75,7 @@ class Survivor extends Humanoid {
     GameManager.survivors.remove(this);
   }
 
-  private function checks() {
+  private function checks(delta: Float) {
     if (health <= 0) {
       die();
     }
@@ -87,9 +90,5 @@ class Survivor extends Humanoid {
     if (fright > 20.0) {
       sanity -= delta / 5.0;
     }
-  }
-
-  private function harvest(resource: Resource) {
-   // resource.available 
   }
 }
