@@ -65,8 +65,8 @@ class Input {
     var offset = GameManager.camera.Ret_Offset();
     var x = Std.int((event.stageX - offset.x) / 32);
     var y = Std.int((event.stageY - offset.y) / 32);
-    GameManager.survivors[0].behavior = Behavior.STAY;
-    GameManager.survivors[0].update(0);
-    GameManager.survivors[0].behavior = Behavior.MOVE(x, y);
+    //GameManager.survivors[0].behavior = Behavior.STAY;
+    //GameManager.survivors[0].update(0);
+    //GameManager.survivors[0].behavior = Behavior.MOVE(x, y);
   }
 }

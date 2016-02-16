@@ -74,6 +74,7 @@ class UnitSelector {
     if ( do_not_select && !Input.mouse[Input.Mouse_left] ) {
       do_not_select = false;
     }
+    
     // move highlights on selected zombies
     for ( z in 0...units.length ) {
       var pos = units[z].ret_position();

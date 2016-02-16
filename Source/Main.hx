@@ -99,6 +99,7 @@ class Main extends Sprite {
     Input.mouse_pos.y = Std.int(mouseY - camera.y);
     Input.mouse_x     = Std.int(Input.mouse_pos.x);
     Input.mouse_y     = Std.int(Input.mouse_pos.y);
+    
     weather.update(delta);
     camera.update(delta);
     console.update(delta);

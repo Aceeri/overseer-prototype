@@ -46,9 +46,9 @@ class Pathfinder {
     var closest: Node = null;
     var low_dist: Float = start_node.get_heuristic(end_node);
     var count = 0;
-    while (open_set.length >= 0) {
+    while (open_set.length >= 0 || current != null) {
       closed_set.push(current);
-      ////set_bitmap(current, 0xAA333333);
+      //set_bitmap(current, 0xAA333333);
 
       if (current.get_heuristic(end_node) < low_dist) {
         closest = current;
