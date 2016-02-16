@@ -124,7 +124,7 @@ class BuildingParser {
           if (char == resources[r]) {
             // set resources
             var amount = 50;
-            resource_grid.set(x, y, new Resource(amount, as_grid("*" + char)));
+            resource_grid.set(x, y, new Resource(x, y, amount, as_grid("*" + char)));
             break;
           }
         }
