@@ -10,7 +10,7 @@ import utils.Grid;
 class Pathfinder {
   private var nodes: Grid<Node>;
   private var clone: Grid<Node>;
-  private var cutoff: Int = 500;
+  private var cutoff: Int = 200;
   public var bitmap_data: BitmapData;
 
   public function new(nodes_: Grid<Node>) {
@@ -46,7 +46,17 @@ class Pathfinder {
     var closest: Node = null;
     var low_dist: Float = start_node.get_heuristic(end_node);
     var count = 0;
-    while (open_set.length >= 0 || current != null) {
+    while (open_set.length >= 0) {
+      if (count == cutoff || current == null) {
+        trace("CLOSEST, NO PATH");
+        if (closest == null) {
+          return [];
+        } else {
+          var node_path = reconstruct_path(closest);
+          return as_vector2(node_path);
+        }
+      }
+
       closed_set.push(current);
       //set_bitmap(current, 0xAA333333);
 
@@ -56,16 +66,6 @@ class Pathfinder {
         count = 0;
       } else {
         count++;
-
-        if (count == cutoff) {
-          trace("CLOSEST, NO PATH");
-          if (closest == null) {
-            return [];
-          } else {
-            var node_path = reconstruct_path(closest);
-            return as_vector2(node_path);
-          }
-        }
       }
 
       var check = surrounding(current, cut_corner);
