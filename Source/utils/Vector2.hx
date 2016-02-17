@@ -22,10 +22,8 @@ class Vector2 {
 
   // distance between two tiles of vectors, the vectors should not
   // be the tile position, rather the position of the object.
-   public function distance_tile(vec:Vector2) : Float {
-    var dx : Int = Std.int(x/32 - vec.y/32);
-    var dy : Int = Std.int(y/32 - vec.y/32);
-    return Math.sqrt(dx * dx + dy * dy);
+  static public function distance_tile(vec:Vector2) : Float {
+    return Std.int(x - vec.x) + Std.int(y - vec.y);
   }
 
   public function to_string() : String {

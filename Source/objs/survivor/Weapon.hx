@@ -1,12 +1,12 @@
 package objs.survivor;
 
 enum Type {
-  Pistol;
-  Submachine;
-  Rifle;
-  Shotgun;
-  Melee;
-  Explosive;
+  Pistol,
+  Submachine,
+  Rifle,
+  Shotgun,
+  Melee,
+  Explosive
 }
 
 class Weapon {
@@ -49,7 +49,7 @@ class Weapon {
     new Weapon(Type.Submachine, "P90",    3.3, 10, 50, 65.0, 7, 3.2, 10.0),
     new Weapon(Type.Submachine, "MAC-10", 5.2,  8, 30, 60.0, 6, 2.5, 10.0),
     new Weapon(Type.Submachine, "UMP-45", 2.8, 13, 25, 73.0, 8, 2.5, 10.0),
-    new Weapon(Type.Submachine, "MP-7",   3.5, 11, 30, 55.0, 7, 1.8, 10.0)?,
+    new Weapon(Type.Submachine, "MP-7",   3.5, 11, 30, 55.0, 7, 1.8, 10.0),
     // -------------------- rifles ---------------------
     new Weapon(Type.Rifle, "Galil AR", ),
     new Weapon(Type.Rifle, "M4A4", ),
@@ -74,6 +74,6 @@ class Weapon {
     // -------------------- explosives --------------------
     new Weapon(Type.Explosive, "Molotov", ),
     new Weapon(Type.Explosive, "HE", ),
-    new Weapon(Type.Explosive, "Decoy", ),*/
+    new Weapon(Type.Explosive, "Decoy", ),
   ];
 }
