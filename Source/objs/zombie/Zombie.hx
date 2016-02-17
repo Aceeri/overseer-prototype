@@ -18,6 +18,7 @@ class Zombie extends Humanoid {
   public static inline var Max_speed: Float = 10.0;
   public static inline var Min_speed: Float = 2.0;
 // private:
+
 // public:
   public function new(x_:Int, y_:Int) {
     super(x_, y_);
@@ -26,16 +27,9 @@ class Zombie extends Humanoid {
     speed = Math.random() * Max_speed + Min_speed;
   }
 
-  override public function destroy() : Void {
-    super.destroy();
-    Layers.Rem_Child(image, Layers.LayerType.HUMANOID);
-  }
-
   override public function update(dt:Float) : Void {
     super.update(dt);
-    if ( health <= 0 ) {
-      destroy();
-    }
+    trace("update");
   }
 
   public function ret_position():Vector2 { return position; }
@@ -45,6 +39,7 @@ class Zombie extends Humanoid {
     position.y = y;
   }
   public function set_target_pos(v:Vector2) {
+    trace("setting target pos");
     behavior = Behavior.MOVE(Std.int(v.x / 32), Std.int(v.y / 32));
   }
 }
